@@ -8,8 +8,8 @@ requirements = [
 ]
 
 setup(
-	name = 'jitcdxe_common',
-	description = 'Common code for JiTCxDE',
+	name = 'jitcxde_common',
+	description = 'Common code for JiTC*DE',
 	long_description = open('README.rst', encoding='utf8').read(),
 	author = 'Gerrit Ansmann',
 	author_email = 'gansmann@uni-bonn.de',
