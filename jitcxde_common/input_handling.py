@@ -41,6 +41,6 @@ def sort_helpers(helpers):
 	
 	return helpers
 
-def _sympify_helpers(helpers):
+def sympify_helpers(helpers):
 	return [(helper[0], sympify(helper[1]).doit()) for helper in helpers]
 
