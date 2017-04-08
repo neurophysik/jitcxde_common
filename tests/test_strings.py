@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from jitcxde_common import *
+from jitcxde_common.strings import remove_suffix, ensure_suffix, count_up
 import unittest
 
 class StringTest(unittest.TestCase):

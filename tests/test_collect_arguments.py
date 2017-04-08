@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import sympy
 import unittest
-from jitcxde_common import *
+from jitcxde_common.collect_arguments import collect_arguments
 
 class TestCollectArguments(unittest.TestCase):
 	def test_complex_expression(self):

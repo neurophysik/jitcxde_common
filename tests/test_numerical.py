@@ -4,7 +4,7 @@
 import numpy as np
 from numpy.testing import assert_allclose
 import unittest
-from jitcxde_common import *
+from jitcxde_common.numerical import random_direction, orthonormalise
 
 class RandomDirectionTest(unittest.TestCase):
 	def test_random_direction(self):

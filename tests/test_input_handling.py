@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from jitcxde_common import *
+from jitcxde_common.input_handling import sort_helpers
 import unittest
 from sympy import symbols
 
