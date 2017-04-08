@@ -85,8 +85,8 @@ def render_and_write_code(
 		else:
 			write_in_chunks(codelines(), mainfile, deffile, name, chunk_size, arguments)
 
-def render_template(filename, target, **kwargs):
-	folder = path.dirname( stack()[1][1] )
+def render_template(filename, target, folder=None, **kwargs):
+	folder = folder or path.dirname( stack()[1][1] )
 	env = Environment(loader=FileSystemLoader(folder))
 	template = env.get_template(filename)
 	with open(target, "w") as codefile:
