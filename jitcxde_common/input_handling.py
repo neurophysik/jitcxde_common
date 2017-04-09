@@ -10,7 +10,7 @@ def handle_input(f_sym,n):
 	if isgeneratorfunction(f_sym):
 		n = n or sum(1 for _ in f_sym())
 		return f_sym, n
-	elif f_sym == []:
+	elif len(f_sym) == 0:
 		return f_sym, n
 	else:
 		len_f = len(f_sym)
