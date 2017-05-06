@@ -1,4 +1,5 @@
 from __future__ import print_function, division, with_statement
+from sympy import preorder_traversal
 
 def collect_arguments(expression, function):
 	"""
@@ -13,8 +14,8 @@ def collect_arguments(expression, function):
 		list of all arguments with which `function` is called within `expression`.
 	"""
 	
-	if expression.__class__ == function:
-		return {expression.args}
-	else:
-		return set().union(*(collect_arguments(arg, function) for arg in expression.args))
-
+	arguments = set()
+	for subexpression in preorder_traversal(expression):
+		if subexpression.__class__ == function:
+			arguments.add(subexpression.args)
+	return arguments
