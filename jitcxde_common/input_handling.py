@@ -44,3 +44,20 @@ def sort_helpers(helpers):
 def sympify_helpers(helpers):
 	return [(helper[0], sympify(helper[1]).doit()) for helper in helpers]
 
+def filter_helpers(helpers,symbols):
+	"""
+	filters a list of helpers to contain only those listed in symbols and those needed for calculating them.
+	"""
+	needed = set(symbols) # convert and copy
+	
+	filtered_rev = []
+	for helper in reversed(helpers):
+		if helper[0] in needed:
+			filtered_rev.append(helper)
+			needed.update(helper[1].free_symbols)
+	
+	return list(reversed(filtered_rev))
+
+def copy_helpers(helpers):
+	return [helper for helper in helpers]
+
