@@ -9,6 +9,8 @@ from inspect import stack
 from setuptools import setup, Extension
 import shutil
 from sys import version_info, modules
+from warnings import warn
+from traceback import format_exc
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
@@ -64,7 +66,7 @@ class jitcxde(object):
 	def sourcefile(self):
 		return self._tmpfile(self._modulename + ".c")
 	
-	def render_template(self, **kwargs):
+	def render_template(self,**kwargs):
 		kwargs["module_name"] = self._modulename
 		kwargs["Python_version"] = version_info[0]
 		folder = path.dirname( stack()[1][1] )
@@ -72,6 +74,18 @@ class jitcxde(object):
 		template = env.get_template("jitced_template.c")
 		with open(self.sourcefile, "w") as codefile:
 			codefile.write(template.render(kwargs))
+	
+	def _attempt_compilation(self,reset=True):
+		self.report("Generating, compiling, and loading C code.")
+		try:
+			self.compile_C()
+		except:
+			warn(format_exc())
+			line = "\n"+60*"="+"\n"
+			warn(line + "Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call `generate_lambdas` to explicitly do this and bypass the compile attempt and error message. Otherwise, you want to take care of fixing the above errors." + line)
+		else:
+			if reset:
+				self.reset_integrator()
 	
 	def _compile_and_load(self,verbose,extra_compile_args):
 		extension = Extension(
