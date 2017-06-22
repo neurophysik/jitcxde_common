@@ -49,7 +49,10 @@ class jitcxde(object):
 		if self.verbose:
 			print(message)
 	
-	def process_modulename(self,modulename):
+	def _process_modulename(self,modulename):
+		"""
+		Sets the modulename from input (if specified) or automatically.
+		"""
 		if modulename:
 			if modulename in modules.keys():
 				raise NameError("Module name has already been used in this instance of Python.")
@@ -66,7 +69,7 @@ class jitcxde(object):
 	def sourcefile(self):
 		return self._tmpfile(self._modulename + ".c")
 	
-	def render_template(self,**kwargs):
+	def _render_template(self,**kwargs):
 		kwargs["module_name"] = self._modulename
 		kwargs["Python_version"] = version_info[0]
 		folder = path.dirname( stack()[1][1] )
