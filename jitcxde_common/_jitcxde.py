@@ -82,7 +82,7 @@ class jitcxde(object):
 		except:
 			warn(format_exc())
 			line = "\n"+60*"="+"\n"
-			warn(line + "Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call `generate_lambdas` to explicitly do this and bypass the compile attempt and error message. Otherwise, you want to take care of fixing the above errors." + line)
+			warn(line + "READ ME FIRST" + line + "Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call `generate_lambdas` to explicitly do this and bypass the compile attempt and error messages. Otherwise, you want to take care of fixing the above errors." + 2*line)
 		else:
 			if reset:
 				self.reset_integrator()
