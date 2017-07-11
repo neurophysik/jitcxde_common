@@ -7,6 +7,7 @@ from tempfile import mkdtemp
 from os import path
 from inspect import stack
 from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext
 import shutil
 from sys import version_info, modules
 from warnings import warn
@@ -17,6 +18,40 @@ from jinja2 import Environment, FileSystemLoader
 
 from .module_handling import get_module_path, modulename_from_path, find_and_load_module, module_from_path
 from .strings import ensure_suffix, count_up
+
+#: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymPy uses the `pow` function for small integer powers (`SymPy Issue 8997`_). 
+DEFAULT_COMPILE_ARGS = [
+			"-std=c11",
+			"-Ofast",
+			"-g0",
+			"-march=native",
+			"-mtune=native",
+			"-Wno-unknown-pragmas",
+			]
+
+#: A list with the default linker arguments.
+DEFAULT_LINK_ARGS = [ "-lm" ]
+
+#: A list with the default compile arguments for the Microsoft compiler. I could not find what level of optimisation is needed to address the problem of SymPy using the `pow` function for small integer powers (`SymPy Issue 8997`_).
+MSVC_COMPILE_ARGS = [
+			"/Ox",
+			"/wd4068"
+			]
+
+#: A list with the default linker arguments for the Microsoft compiler.
+MSVC_LINK_ARGS = [ "/ignore:4197" ]
+
+class build_ext_with_compiler_detection(build_ext):
+	def build_extensions(self):
+		for extension in self.extensions:
+			if self.compiler.compiler_type=="msvc":
+				extension.extra_compile_args = MSVC_COMPILE_ARGS
+				extension.extra_link_args    = MSVC_LINK_ARGS
+			else:
+				extension.extra_compile_args = DEFAULT_COMPILE_ARGS
+				extension.extra_link_args    = DEFAULT_LINK_ARGS
+		
+		build_ext.build_extensions(self)
 
 class jitcxde(object):
 	"""
@@ -90,11 +125,13 @@ class jitcxde(object):
 			if reset:
 				self.reset_integrator()
 	
-	def _compile_and_load(self,verbose,extra_compile_args):
+	def _compile_and_load(self,verbose,extra_compile_args,extra_link_args=[]):
+		auto_args = not (extra_link_args or extra_compile_args)
+		
 		extension = Extension(
 				self._modulename,
 				sources = [self.sourcefile],
-				extra_link_args = ["-lm"],
+				extra_link_args = extra_link_args,
 				include_dirs = [numpy.get_include()],
 				extra_compile_args = extra_compile_args,
 				)
@@ -111,7 +148,8 @@ class jitcxde(object):
 			name = self._modulename,
 			ext_modules = [extension],
 			script_args = script_args,
-			verbose = verbose
+			verbose = verbose,
+			cmdclass = {} if auto_args else {'build_ext':build_ext_with_compiler_detection}
 			)
 		
 		self.jitced = find_and_load_module(self._modulename,self._tmpfile())
