@@ -4,7 +4,8 @@ from io import open
 requirements = [
 	'sympy',
 	'numpy',
-	'jinja2'
+	'jinja2',
+	'setuptools'
 ]
 
 setup(
