@@ -149,7 +149,7 @@ class jitcxde(object):
 			ext_modules = [extension],
 			script_args = script_args,
 			verbose = verbose,
-			cmdclass = {} if auto_args else {'build_ext':build_ext_with_compiler_detection}
+			cmdclass = {'build_ext':build_ext_with_compiler_detection} if auto_args else {}
 			)
 		
 		self.jitced = find_and_load_module(self._modulename,self._tmpfile())
