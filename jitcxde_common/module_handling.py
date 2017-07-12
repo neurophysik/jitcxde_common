@@ -7,5 +7,5 @@ elif (3,) <= version_info < (3,3):
 elif (3,3) <= version_info < (3,5):
 	from .module_handling33 import get_module_path, modulename_from_path, find_and_load_module, module_from_path
 elif (3,5) <= version_info:
-	from .module_handling35 import get_module_path, modulename_from_path, find_and_load_module, module_from_path
+	from .module_handling35 import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
 

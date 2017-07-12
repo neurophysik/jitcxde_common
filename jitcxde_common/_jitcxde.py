@@ -16,8 +16,8 @@ from traceback import format_exc
 import numpy
 from jinja2 import Environment, FileSystemLoader
 
-from .module_handling import get_module_path, modulename_from_path, find_and_load_module, module_from_path
-from .strings import ensure_suffix, count_up
+from .module_handling import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
+from .strings import count_up
 
 #: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymPy uses the `pow` function for small integer powers (`SymPy Issue 8997`_). 
 DEFAULT_COMPILE_ARGS = [
@@ -175,7 +175,7 @@ class jitcxde(object):
 		folder, filename = path.split(destination)
 		
 		if filename:
-			destination = ensure_suffix(destination, ".so")
+			destination = add_suffix(destination)
 			modulename = modulename_from_path(filename)
 			if modulename != self._modulename:
 				self.compile_C(modulename=modulename)
@@ -186,7 +186,7 @@ class jitcxde(object):
 		else:
 			self._compile_C()
 			sourcefile = get_module_path(self._modulename, self._tmpfile())
-			destination = path.join(folder, ensure_suffix(self._modulename, ".so"))
+			destination = path.join(folder, add_suffix(self._modulename))
 			self.report("saving file to " + destination)
 		
 		if not self.compile_attempt:

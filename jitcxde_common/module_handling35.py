@@ -3,15 +3,26 @@ from os import path
 from importlib.util import module_from_spec
 from importlib.machinery import ExtensionFileLoader, EXTENSION_SUFFIXES, FileFinder
 from importlib.util import spec_from_file_location
-from jitcxde_common.strings import remove_suffix
 
 loader_details = (ExtensionFileLoader, EXTENSION_SUFFIXES)
+suffices = sorted(EXTENSION_SUFFIXES, key=len)
+
+def remove_suffix(path):
+	for suffix in reversed(suffices):
+		if path.endswith(suffix):
+			return path.rpartition(suffix)[0]
+	else:
+		return path
+
+def add_suffix(path):
+	for suffix in suffices:
+		if path.endswith(suffix):
+			return path
+	else:
+		return path + suffices[0]
 
 def modulename_from_path(full_path):
-	filename = path.basename(full_path)
-	for suffix in sorted(EXTENSION_SUFFIXES, key=len, reverse=True):
-		filename = remove_suffix(filename, suffix)
-	return filename
+	return remove_suffix(path.basename(full_path))
 
 def get_module_path(modulename, folder=""):
 	finder = FileFinder(folder, loader_details)

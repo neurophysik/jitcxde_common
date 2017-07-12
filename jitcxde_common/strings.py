@@ -3,6 +3,7 @@ from __future__ import print_function, division, with_statement
 # String manipulation
 # -------------------
 
+# obsolete
 def remove_suffix(string, suffix):
 	partition = string.rpartition(suffix)
 	if partition[1] and not partition[2]:
@@ -10,6 +11,7 @@ def remove_suffix(string, suffix):
 	else:
 		return string
 
+# obsolete
 def ensure_suffix(string, suffix):
 	if not string.endswith(suffix):
 		return string + suffix
