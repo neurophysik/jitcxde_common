@@ -6,8 +6,8 @@ As these are rather advanced topics, please read the respective documentation of
 
 In the following, *JiTC*DE* refers to any of the aforementioned modules.
 
-Handling very large differential equations
-------------------------------------------
+Networks or other very large differential equations
+---------------------------------------------------
 
 JiTC*DE is specifically designed to be able to handle large differential equations, as they arise, e.g., in networks.
 There is an explicit `example of a network` in JiTCODE’s documentation, which is straightforward to translate to JiTCDDE and JiTCSDE.
