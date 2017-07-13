@@ -9,6 +9,8 @@ In the following, *JiTC*DE* refers to any of the aforementioned modules.
 Handling very large differential equations
 ------------------------------------------
 
+JiTC*DE is specifically designed to be able to handle large differential equations, as they arise, e.g., in networks.
+There is an explicit `example of a network` in JiTCODE’s documentation, which is straightforward to translate to JiTCDDE and JiTCSDE.
 For very large differential equations, there are two sources of memory or speed problems:
 
 *	**The compiler**,
@@ -25,7 +27,7 @@ For very large differential equations, there are two sources of memory or speed 
 	which may use too much memory. While it can be completely deactivated by setting the environment variable `SYMPY_USE_CACHE=no`, it exists for a reason and may speed things up.
 	
 	To address this, JiTC*DE clears the cache after each chunk is written and accepts generator functions as an input for :math:`f` (or similar), which makes SymPy’s handling of an entry happen right before the corresponding code is generated.
-	See the `network example`_ from JiTCODE’s documentation for an example how to use a generator function.
+	See the `example of a network`_ from JiTCODE’s documentation for an example how to use a generator function.
 
 Also note that simplifications and common-subexpression eliminations may take a considerable amount of time (and can be disabled).
 In particular, if you want to calculate the Lyapunov exponents of a larger system, it may be worthwhile to set `simplify` to `False`.
@@ -94,4 +96,4 @@ Note that in either case, these arguments are appended to (and thus override) wh
 
 .. _SymPy Issue 8997: https://github.com/sympy/sympy/issues/8997
 
-.. _network example: https://jitcode.readthedocs.io/#module-SW_of_Roesslers
+.. _example of a network: https://jitcode.readthedocs.io/#module-SW_of_Roesslers
