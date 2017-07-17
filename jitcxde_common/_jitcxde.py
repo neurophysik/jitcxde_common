@@ -35,7 +35,9 @@ DEFAULT_LINK_ARGS = [ "-lm" ]
 #: A list with the default compile arguments for the Microsoft compiler. I could not find what level of optimisation is needed to address the problem of SymPy using the `pow` function for small integer powers (`SymPy Issue 8997`_).
 MSVC_COMPILE_ARGS = [
 			"/Ox",
-			"/wd4068"
+			"/wd4068",
+			"/wd4146",
+			"/wd4018"
 			]
 
 #: A list with the default linker arguments for the Microsoft compiler.
