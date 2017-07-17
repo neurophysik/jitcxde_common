@@ -35,7 +35,9 @@ DEFAULT_LINK_ARGS = [ "-lm" ]
 #: A list with the default compile arguments for the Microsoft compiler. I could not find what level of optimisation is needed to address the problem of SymPy using the `pow` function for small integer powers (`SymPy Issue 8997`_).
 MSVC_COMPILE_ARGS = [
 			"/Ox",
-			"/wd4068"
+			"/wd4068",
+			"/wd4146",
+			"/wd4018"
 			]
 
 #: A list with the default linker arguments for the Microsoft compiler.
@@ -125,8 +127,8 @@ class jitcxde(object):
 			if reset:
 				self.reset_integrator()
 	
-	def _compile_and_load(self,verbose,extra_compile_args,extra_link_args=[]):
-		auto_args = not (extra_link_args or extra_compile_args)
+	def _compile_and_load(self,verbose,extra_compile_args,extra_link_args=None):
+		auto_args = extra_link_args is None and extra_compile_args is None
 		
 		extension = Extension(
 				self._modulename,
