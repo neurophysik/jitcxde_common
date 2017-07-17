@@ -55,7 +55,7 @@ Compiler and Linker Arguments
 -----------------------------
 
 All classes have a `compile_C` command which has `extra_compile_args` and `extra_link_args` as an argument.
-If those arguments are left empty, defaults (listed below) are chosen depending on the compiler that Setuptools actually uses.
+If those arguments are left `None`, defaults (listed below) are chosen depending on the compiler that Setuptools actually uses.
 You may want to modify the these arguments for two reasons:
 
 * To tweak the compilation process and results.

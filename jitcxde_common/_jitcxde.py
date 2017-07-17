@@ -127,8 +127,8 @@ class jitcxde(object):
 			if reset:
 				self.reset_integrator()
 	
-	def _compile_and_load(self,verbose,extra_compile_args,extra_link_args=[]):
-		auto_args = not (extra_link_args or extra_compile_args)
+	def _compile_and_load(self,verbose,extra_compile_args,extra_link_args=None):
+		auto_args = extra_link_args is None and extra_compile_args is None
 		
 		extension = Extension(
 				self._modulename,
