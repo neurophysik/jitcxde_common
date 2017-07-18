@@ -6,6 +6,32 @@ As these are rather advanced topics, please read the respective documentation of
 
 In the following, *JiTC*DE* refers to any of the aforementioned modules.
 
+Installation
+------------
+
+Linux (and other Unixes, like MacOS)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+*	Usually, you will already have a C compiler installed and need not worry about this step.
+	Otherwise, it should be easy to install GCC or Clang through your package manager.
+	Note that for using Clang, it may be necessary to change the `CC` flag (see below).
+	
+*	Python should be installed by default as well.
+	
+*	The easiest way to install JiTC*DE is via PyPi like this:
+	
+	.. code-block:: bash
+	
+		pip3 install jitcode --user
+	
+	Replace `jitcode` with `jitcdde` or `jitcsde` if that’s what you want.
+	Replace `pip3` with `pip` if you are working in an environment or with Python 2.
+
+Windows (Anaconda)
+^^^^^^^^^^^^^^^^^^
+*	Install a C compiler.
+*   TODO
+
 Networks or other very large differential equations
 ---------------------------------------------------
 
@@ -72,7 +98,7 @@ These can be imported from `jitcxde_common` like this:
 
 You can then modify them before usage, e.g., like this:
 
-.. code-block:: python
+. code-block:: python
 
 	ODE.compile_C(extra_compile_args = DEFAULT_COMPILE_ARGS + ["--my-flag"])
 
