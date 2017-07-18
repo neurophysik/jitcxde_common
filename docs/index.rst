@@ -15,9 +15,9 @@ Linux (and other Unixes, like MacOS)
 *	Usually, you will already have a C compiler installed and need not worry about this step.
 	Otherwise, it should be easy to install GCC or Clang through your package manager.
 	Note that for using Clang, it may be necessary to change the `CC` flag (see below).
-	
+
 *	Python should be installed by default as well.
-	
+
 *	The easiest way to install JiTC*DE is via PyPi like this:
 	
 	.. code-block:: bash
@@ -29,25 +29,39 @@ Linux (and other Unixes, like MacOS)
 
 Windows (Anaconda)
 ^^^^^^^^^^^^^^^^^^
+
+*	Install Anaconda.
+
 *	Install a C compiler.
-*   TODO
+	The only one that Setuptools uses without a major struggle is from `Microsoft Build Tools for Visual Studio <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_
+	For more details and everything else, see `this site <https://wiki.python.org/moin/WindowsCompilers>`_.
+
+*	Open the Anaconda Prompt and run:
+	
+	.. code-block:: bash
+	
+		pip install jitcode --user
+	
+	Replace `jitcode` with `jitcdde` or `jitcsde` if that’s what you want.
 
 Networks or other very large differential equations
 ---------------------------------------------------
 
 JiTC*DE is specifically designed to be able to handle large differential equations, as they arise, e.g., in networks.
-There is an explicit `example of a network` in JiTCODE’s documentation, which is straightforward to translate to JiTCDDE and JiTCSDE.
+There is an explicit `example of a network`_ in JiTCODE’s documentation, which is straightforward to translate to JiTCDDE and JiTCSDE.
+
 For very large differential equations, there are two sources of memory or speed problems:
 
 *	**The compiler**,
 	who has to compile megabytes of unstructured code and tries to handle it all at once, which may use too much time and memory. For some compilers, disabling all optimisation can avert this problem, but then, compiler optimisations usually are a good thing.
 	
 	As a compromise, JiTC*DE structures large source code into chunks, which the compiler then handles separately. This way optimisation can happen within the chunks, but not across chunks. The precise size of those chunks can be controlled by the option `chunk_size` which is available for all code-generation subroutines.
-	
 	If there is an obvious grouping of your :math:`f`, the group size suggests itself for `chunk_size`.
-    For example, if you want to simulate the dynamics of three-dimensional oscillators coupled onto a 40×40 lattice and if the differential equations are grouped first by oscillator and then by lattice row, a chunk size of 120 suggests itself.
+	
+	For example, if you want to simulate the dynamics of three-dimensional oscillators coupled onto a 40×40 lattice and if the differential equations are grouped first by oscillator and then by lattice row, a chunk size of 120 suggests itself.
 	
 	We obtained better performances in these regards with Clang than with GCC.
+	
 
 *	**SymPy’s cache**,
 	which may use too much memory. While it can be completely deactivated by setting the environment variable `SYMPY_USE_CACHE=no`, it exists for a reason and may speed things up.
@@ -61,14 +75,21 @@ In particular, if you want to calculate the Lyapunov exponents of a larger syste
 Choosing the Compiler
 ---------------------
 
+Linux (and other Unixes, like MacOS)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Setuptools uses your operating system’s `CC` flag to choose the compiler.
 Therefore, this is what you have to change, if you want to change the compiler.
 Some common ways to do this are (using `clang` as an example for the desired compiler):
 
-* On Unix, call `export CC=clang` in the terminal before running JiTC*DE. Note that you have to do this anew for every instance of the terminal or write it into some configuration file.
+* Call `export CC=clang` in the terminal before running JiTC*DE. Note that you have to do this anew for every instance of the terminal or write it into some configuration file.
 * Call `os.environ["CC"] = "clang"` in Python.
 
 So far, Clang has proven to be better at handling large differential equations.
+
+Windows
+^^^^^^^
+
+I haven’t tried it myself, but `this site <https://wiki.python.org/moin/WindowsCompilers>`_ should help you.
 
 Choosing the Module Name
 ------------------------
