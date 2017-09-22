@@ -106,18 +106,19 @@ This way you get the most of future versions of JiTC*DE.
 
 Note that in either case, these arguments are appended to (and thus override) whatever Setuptools uses as a default.
 
+.. automodule:: _jitcxde
+	:members:
+	:exclude-members: jitcxde
+
+.. _large_systems:
+
 Common Mistakes
 ---------------
 
 *	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymPy variants.
 	For example, instead of `math.sin` or `numpy.sin`, you have to use `sympy.sin`.
 
-
-.. automodule:: _jitcxde
-	:members:
-	:exclude-members: jitcxde
-
-.. _large_systems:
+*	If JiTC*DE is too slow, check whether you deactivated simplifications and common-subexpression eliminations, used a generator and avoided `SymPy Issue 4596`_.
 
 .. _JiTCODE: https://github.com/neurophysik/jitcode
 
