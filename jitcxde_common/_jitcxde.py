@@ -19,7 +19,7 @@ from jinja2 import Environment, FileSystemLoader
 from .module_handling import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
 from .strings import count_up
 
-#: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymPy uses the `pow` function for small integer powers (`SymPy Issue 8997`_). 
+#: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymPy uses the `pow` function for small integer powers (`SymPy Issue 8997`_).
 DEFAULT_COMPILE_ARGS = [
 			"-std=c11",
 			"-Ofast",
