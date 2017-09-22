@@ -45,7 +45,7 @@ For very large differential equations, there are two sources of memory or speed 
 	As a compromise, JiTC*DE structures large source code into chunks, which the compiler then handles separately. This way optimisation can happen within the chunks, but not across chunks. The precise size of those chunks can be controlled by the option `chunk_size` which is available for all code-generation subroutines.
 	
 	If there is an obvious grouping of your :math:`f`, the group size suggests itself for `chunk_size`.
-    For example, if you want to simulate the dynamics of three-dimensional oscillators coupled onto a 40×40 lattice and if the differential equations are grouped first by oscillator and then by lattice row, a chunk size of 120 suggests itself.
+	For example, if you want to simulate the dynamics of three-dimensional oscillators coupled onto a 40×40 lattice and if the differential equations are grouped first by oscillator and then by lattice row, a chunk size of 120 suggests itself.
 	
 	We obtained better performances in these regards with Clang than with GCC.
 
@@ -105,6 +105,13 @@ You can then modify them before usage, e.g., like this:
 This way you get the most of future versions of JiTC*DE.
 
 Note that in either case, these arguments are appended to (and thus override) whatever Setuptools uses as a default.
+
+Common Mistakes
+---------------
+
+*	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymPy variants.
+	For example, instead of `math.sin` or `numpy.sin`, you have to use `sympy.sin`.
+
 
 .. automodule:: _jitcxde
 	:members:
