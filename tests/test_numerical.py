@@ -4,7 +4,7 @@
 import numpy as np
 from numpy.testing import assert_allclose
 import unittest
-from jitcxde_common.numerical import random_direction, orthonormalise
+from jitcxde_common.numerical import random_direction, orthonormalise, rel_dist
 
 class RandomDirectionTest(unittest.TestCase):
 	def test_random_direction(self):
@@ -55,5 +55,15 @@ class OrthonormaliseTest(unittest.TestCase):
 		assert_allclose( vectors[1], np.array([np.sqrt(0.5),-np.sqrt(0.5)]) )
 		assert_allclose( norms, np.array([np.sqrt(2),np.sqrt(0.5)]) )
 
+class RelDistTest(unittest.TestCase):
+	def test_reldist_1(self):
+		assert_allclose( rel_dist(1,3), 1.0 )
+	
+	def test_reldist_2(self):
+		assert_allclose( rel_dist(1,1+1e-10), 1e-10 )
+	
+	def test_reldist_2(self):
+		assert_allclose( rel_dist([1,1],[1+1e-10,1]), 1e-10 )
+	
 if __name__ == "__main__":
 	unittest.main(buffer=True)

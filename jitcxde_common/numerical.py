@@ -19,3 +19,8 @@ def orthonormalise(vectors):
 	
 	return np.array(norms)
 
+def rel_dist(x,y):
+	x = np.asarray(x)
+	y = np.asarray(y)
+	return np.linalg.norm(x-y)/np.linalg.norm(np.mean((x,y)))
+
