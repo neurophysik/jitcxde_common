@@ -2,6 +2,9 @@ from __future__ import print_function, division, with_statement
 from inspect import isgeneratorfunction
 from sympy import sympify
 
+def prepare(expr):
+	return sympify(expr).doit()
+
 def handle_input(f_sym,n):
 	"""
 	Converts f_sym to a generator function, if necessary.
@@ -9,14 +12,14 @@ def handle_input(f_sym,n):
 	"""
 	if isgeneratorfunction(f_sym):
 		n = n or sum(1 for _ in f_sym())
-		return f_sym, n
+		return (lambda: (prepare(entry) for entry in f_sym())), n
 	elif len(f_sym) == 0:
 		return lambda:f_sym, n
 	else:
 		len_f = len(f_sym)
 		if (n is not None) and (len_f != n):
 			raise ValueError("len(f_sym) and n do not match.")
-		return (lambda: (entry.doit() for entry in f_sym)), len_f
+		return (lambda: (prepare(entry) for entry in f_sym)), len_f
 
 def depends_on_any(helper, other_helpers):
 	for other_helper in other_helpers:
