@@ -1,15 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-
 from tempfile import mkdtemp
 from os import path
 from inspect import stack
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import shutil
-from sys import version_info, modules
+from sys import modules
 from warnings import warn
 from traceback import format_exc
 
@@ -19,7 +17,7 @@ from jinja2 import Environment, FileSystemLoader
 from .module_handling import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
 from .strings import count_up
 
-#: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymPy uses the `pow` function for small integer powers (`SymPy Issue 8997`_).
+#: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymEngine uses the `pow` function for small integer powers (`SymPy Issue 8997`_).
 DEFAULT_COMPILE_ARGS = [
 			"-std=c11",
 			"-Ofast",
@@ -32,7 +30,7 @@ DEFAULT_COMPILE_ARGS = [
 #: A list with the default linker arguments.
 DEFAULT_LINK_ARGS = [ "-lm" ]
 
-#: A list with the default compile arguments for the Microsoft compiler. I could not find what level of optimisation is needed to address the problem of SymPy using the `pow` function for small integer powers (`SymPy Issue 8997`_).
+#: A list with the default compile arguments for the Microsoft compiler. I could not find what level of optimisation is needed to address the problem of SymEngine using the `pow` function for small integer powers (`SymPy Issue 8997`_).
 MSVC_COMPILE_ARGS = [
 			"/Ox",
 			"/wd4068",
@@ -107,7 +105,6 @@ class jitcxde(object):
 	
 	def _render_template(self,**kwargs):
 		kwargs["module_name"] = self._modulename
-		kwargs["Python_version"] = version_info[0]
 		folder = path.dirname( stack()[1][1] )
 		env = Environment(loader=FileSystemLoader(folder))
 		template = env.get_template("jitced_template.c")

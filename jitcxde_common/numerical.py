@@ -1,4 +1,3 @@
-from __future__ import print_function, division, with_statement
 import numpy as np
 
 def random_direction(n):

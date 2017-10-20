@@ -2,7 +2,7 @@ from setuptools import setup
 from io import open
 
 requirements = [
-	'sympy',
+	'symengine', #TODO version
 	'numpy',
 	'jinja2',
 	'setuptools'
@@ -16,6 +16,7 @@ setup(
 	author_email = 'gansmann@uni-bonn.de',
 	url = 'http://github.com/neurophysik/jitcxde_common',
 	packages = ['jitcxde_common'],
+	python_requires=">=3.3",
 	install_requires = requirements,
 	setup_requires = ['setuptools_scm'],
 	use_scm_version = {'write_to': 'jitcxde_common/version.py'},
