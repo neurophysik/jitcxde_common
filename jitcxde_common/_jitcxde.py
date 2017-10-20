@@ -3,7 +3,7 @@
 
 from tempfile import mkdtemp
 from os import path
-from inspect import stack
+from inspect import stack, isgeneratorfunction
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import shutil
@@ -14,6 +14,7 @@ from traceback import format_exc
 import numpy
 from jinja2 import Environment, FileSystemLoader
 from symengine.printing import ccode
+from symengine import sympify
 
 from .module_handling import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
 from .strings import count_up
@@ -64,6 +65,7 @@ class jitcxde(object):
 		self._tmpdir = None
 		self.verbose = verbose
 		self._modulename = "jitced"
+		self.n = None
 		
 		if module_location is not None:
 			self.jitced = module_from_path(module_location)
@@ -71,6 +73,25 @@ class jitcxde(object):
 		else:
 			self.jitced = None
 			self.compile_attempt = None
+	
+	def _handle_input(self,f_sym):
+		"""
+		Converts f_sym to a generator function, if necessary.
+		Ensures that self.n is the length of f_sym, if not predefined.
+		"""
+		if isgeneratorfunction(f_sym):
+			if self.n is None:
+				self.n = sum(1 for _ in f_sym())
+			return lambda: (sympify(entry) for entry in f_sym())
+		elif len(f_sym) == 0:
+			return lambda: f_sym
+		else:
+			if self.n is None:
+				self.n = len(f_sym)
+			else:
+				if self.n != len(f_sym):
+					raise ValueError("len(f_sym) and n do not match.")
+			return lambda: (sympify(entry) for entry in f_sym)
 	
 	def _tmpfile(self,filename=None):
 		if self._tmpdir is None:
