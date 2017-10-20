@@ -38,7 +38,7 @@ def f_generator():
 class jitcxde_tester(jitcxde):
 	def __init__(self,f_sym=(),n=None,module_location=None,chunk_size=100):
 		jitcxde.__init__(self,False,module_location)
-		self.n=None
+		self.n = n
 		f_sym_wc = self._handle_input(f_sym)
 		set_dy = symengine.Function("set_dy")
 		
