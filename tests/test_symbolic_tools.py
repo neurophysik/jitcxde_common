@@ -1,6 +1,6 @@
 import unittest
 from symengine import Function, Symbol, sin, Integer
-from jitcxde_common.collect_arguments import collect_arguments
+from jitcxde_common.symbolic_tools import collect_arguments
 
 class TestCollectArguments(unittest.TestCase):
 	def test_complex_expression(self):
