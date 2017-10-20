@@ -7,17 +7,17 @@ import shutil
 from tempfile import mkdtemp
 import unittest
 
-import sympy
+import symengine
 import numpy
 
 from jitcxde_common import jitcxde,handle_input,render_and_write_code
 
-y = sympy.Function("y")
+y = symengine.Function("y")
 f = [
 		y(0),
 		2*y(1)**3,
 		y(0)+y(1)+y(2),
-		sympy.exp(y(3)),
+		symengine.exp(y(3)),
 		5,
 	]
 
@@ -39,13 +39,12 @@ class jitcxde_tester(jitcxde):
 	def __init__(self,f_sym=(),n=None,module_location=None,chunk_size=100):
 		jitcxde.__init__(self,False,module_location)
 		f_sym_wc,self.n = handle_input(f_sym,n)
-		set_dy = sympy.Function("set_dy")
+		set_dy = symengine.Function("set_dy")
 		
 		render_and_write_code(
 			(set_dy(i,entry) for i,entry in enumerate(f_sym_wc())),
 			tmpfile = self._tmpfile,
 			name = "f",
-			functions = ["set_dy", "y"],
 			chunk_size = chunk_size,
 			arguments = [
 					("Y" , "PyArrayObject *__restrict const"),
@@ -129,6 +128,13 @@ class basic_test_with_generator_function(basic_test):
 	@classmethod
 	def setUpClass(self):
 		self.argdict = {"f_sym":f_generator, "n":len(f)}
+
+class test_errors(unittest.TestCase):
+	def test_not_supported_error(self):
+		x = symengine.Symbol("x")
+		faulty_f = [y(x).diff(x)]
+		with self.assertRaises(NotImplementedError):
+			jitcxde_tester(faulty_f)
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)

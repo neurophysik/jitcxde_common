@@ -1,9 +1,9 @@
 from __future__ import print_function, division, with_statement
 from inspect import isgeneratorfunction
-from sympy import sympify
+from symengine import sympify
 
 def prepare(expr):
-	return sympify(expr).doit()
+	return sympify(expr)
 
 def handle_input(f_sym,n):
 	"""
@@ -45,7 +45,7 @@ def sort_helpers(helpers):
 	return helpers
 
 def sympify_helpers(helpers):
-	return [(helper[0], sympify(helper[1]).doit()) for helper in helpers]
+	return [(helper[0], prepare(helper[1])) for helper in helpers]
 
 def filter_helpers(helpers,symbols):
 	"""

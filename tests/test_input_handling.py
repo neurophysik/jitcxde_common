@@ -3,9 +3,10 @@
 
 from jitcxde_common.input_handling import sort_helpers, filter_helpers, copy_helpers
 import unittest
-from sympy import symbols
+from symengine import symbols
 from itertools import permutations
-from sympy.abc import p,q,r,s,u,v
+
+p,q,r,s,u,v = symbols("p q r s u v")
 
 cycle = [ [p,q], [q,r], [r,p] ]
 chain = [ [r,s], [q,r], [p,q] ]

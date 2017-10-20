@@ -71,7 +71,6 @@ class jitcxde(object):
 		else:
 			self.jitced = None
 			self.compile_attempt = None
-		
 	
 	def _tmpfile(self,filename=None):
 		if self._tmpdir is None:
