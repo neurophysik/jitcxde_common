@@ -4,12 +4,12 @@ def collect_arguments(expression, function):
 	"""
 	Parameters
 	----------
-	expression : SymPy expression
-	function : Sympy function
+	expression : SymEngine expression
+	function : SymEngine function
 	
 	Returns
 	-------
-	arguments : list of SymPy expressions
+	arguments : list of SymEngine expressions
 		list of all arguments with which `function` is called within `expression`.
 	"""
 	
