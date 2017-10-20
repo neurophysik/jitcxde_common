@@ -8,7 +8,6 @@ from tempfile import mkdtemp
 import unittest
 
 import sympy
-from numpy.testing import assert_allclose
 import numpy
 
 from jitcxde_common import jitcxde,handle_input,render_and_write_code
@@ -112,7 +111,7 @@ class basic_test(unittest.TestCase):
 	
 	def tearDown(self):
 		arg = numpy.random.uniform(-2,2,5)
-		assert_allclose(
+		numpy.testing.assert_allclose(
 				self.tester.jitced.f(arg),
 				f_control(arg)
 			)
