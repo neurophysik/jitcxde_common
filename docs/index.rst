@@ -50,23 +50,11 @@ Networks or other very large differential equations
 JiTC*DE is specifically designed to be able to handle large differential equations, as they arise, e.g., in networks.
 There is an explicit `example of a network`_ in JiTCODE’s documentation, which is straightforward to translate to JiTCDDE and JiTCSDE.
 
-For very large differential equations, there are two sources of memory or speed problems:
-
-*	**The compiler**,
-	who has to compile megabytes of unstructured code and tries to handle it all at once, which may use too much time and memory. For some compilers, disabling all optimisation can avert this problem, but then, compiler optimisations usually are a good thing.
-	
-	As a compromise, JiTC*DE structures large source code into chunks, which the compiler then handles separately. This way optimisation can happen within the chunks, but not across chunks. The precise size of those chunks can be controlled by the option `chunk_size` which is available for all code-generation subroutines.
-	If there is an obvious grouping of your :math:`f`, the group size suggests itself for `chunk_size`.
-	For example, if you want to simulate the dynamics of three-dimensional oscillators coupled onto a 40×40 lattice and if the differential equations are grouped first by oscillator and then by lattice row, a chunk size of 120 suggests itself.
-	
-	We obtained better performances in these regards with Clang than with GCC.
-	
-
-*	**SymPy’s cache**,
-	which may use too much memory. While it can be completely deactivated by setting the environment variable `SYMPY_USE_CACHE=no`, it exists for a reason and may speed things up.
-	
-	To address this, JiTC*DE clears the cache after each chunk is written and accepts generator functions as an input for :math:`f` (or similar), which makes SymPy’s handling of an entry happen right before the corresponding code is generated.
-	See the `example of a network`_ from JiTCODE’s documentation for an example how to use a generator function.
+If JiTC*DE handled the code for very large differential equations naïvely, there would be a problem arising from the compiler trying to handle megabytes of unstructured code at once, which may use too much time and memory. For some compilers, disabling all optimisation can avert this problem, but then, compiler optimisations usually are a good thing.
+As a compromise, JiTC*DE structures large source code into chunks, which the compiler then handles separately. This way optimisation can happen within the chunks, but not across chunks. The precise size of those chunks can be controlled by the option `chunk_size` which is available for all code-generation subroutines.
+If there is an obvious grouping of your :math:`f`, the group size suggests itself for `chunk_size`.
+For example, if you want to simulate the dynamics of three-dimensional oscillators coupled onto a 40×40 lattice and if the differential equations are grouped first by oscillator and then by lattice row, a chunk size of 120 suggests itself.
+We obtained better performances in these regards with Clang than with GCC.
 
 Also note that simplifications and common-subexpression eliminations may take a considerable amount of time (and can be disabled).
 In particular, if you want to calculate the Lyapunov exponents of a larger system, it may be worthwhile to set `simplify` to `False`.
@@ -135,8 +123,8 @@ Note that in either case, these arguments are appended to (and thus override) wh
 Common Mistakes
 ---------------
 
-*	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymPy variants.
-	For example, instead of `math.sin` or `numpy.sin`, you have to use `sympy.sin`.
+*	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymEngine variants.
+	For example, instead of `math.sin` or `numpy.sin`, you have to use `symengine.sin`.
 
 *	If JiTC*DE is too slow, check whether you deactivated simplifications and common-subexpression eliminations, used a generator and avoided `SymPy Issue 4596`_.
 
