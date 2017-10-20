@@ -61,11 +61,11 @@ class jitcxde(object):
 	A base class containing elementary, common functionalities of all JiTC*DE projects – mostly file handling. It is pretty dysfunctional on its own and only made to be inherited from.
 	"""
 	
-	def __init__(self,verbose,module_location):
+	def __init__(self,n=None,verbose=True,module_location=None):
 		self._tmpdir = None
 		self.verbose = verbose
 		self._modulename = "jitced"
-		self.n = None
+		self.n = n
 		
 		if module_location is not None:
 			self.jitced = module_from_path(module_location)
