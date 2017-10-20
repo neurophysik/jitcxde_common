@@ -1,5 +1,4 @@
 from .strings import remove_suffix, ensure_suffix, count_up
-from .code_rendering import render_and_write_code, render_template
 from .numerical import random_direction, orthonormalise, rel_dist
 from .collect_arguments import collect_arguments
 from .input_handling import handle_input, sort_helpers, sympify_helpers, copy_helpers, filter_helpers

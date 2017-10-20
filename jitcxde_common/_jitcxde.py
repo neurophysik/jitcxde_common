@@ -13,9 +13,11 @@ from traceback import format_exc
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
+from symengine.printing import ccode
 
 from .module_handling import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
 from .strings import count_up
+from .code_rendering import write_in_chunks, codelines
 
 #: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymEngine uses the `pow` function for small integer powers (`SymPy Issue 8997`_).
 DEFAULT_COMPILE_ARGS = [
@@ -111,6 +113,29 @@ class jitcxde(object):
 		with open(self.sourcefile, "w") as codefile:
 			codefile.write(template.render(kwargs))
 	
+	def render_and_write_code(self,
+			expressions,
+			name,
+			chunk_size = 100,
+			arguments = ()
+			):
+		
+		with \
+				open( self._tmpfile(name+".c"            ), "w" ) as mainfile, \
+				open( self._tmpfile(name+"_definitions.c"), "w" ) as deffile:
+			if chunk_size < 1:
+				for line in codelines(expressions):
+					mainfile.write(line)
+			else:
+				write_in_chunks(
+						codelines(expressions),
+						mainfile,
+						deffile,
+						name,
+						chunk_size,
+						arguments
+					)
+
 	def _attempt_compilation(self,reset=True):
 		self.report("Generating, compiling, and loading C code.")
 		try:

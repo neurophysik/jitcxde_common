@@ -10,7 +10,7 @@ import unittest
 import symengine
 import numpy
 
-from jitcxde_common import jitcxde,handle_input,render_and_write_code
+from jitcxde_common import jitcxde,handle_input
 
 y = symengine.Function("y")
 f = [
@@ -41,9 +41,8 @@ class jitcxde_tester(jitcxde):
 		f_sym_wc,self.n = handle_input(f_sym,n)
 		set_dy = symengine.Function("set_dy")
 		
-		render_and_write_code(
+		self.render_and_write_code(
 			(set_dy(i,entry) for i,entry in enumerate(f_sym_wc())),
-			tmpfile = self._tmpfile,
 			name = "f",
 			chunk_size = chunk_size,
 			arguments = [
