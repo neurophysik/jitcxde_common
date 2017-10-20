@@ -1,52 +1,17 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import sympy
-import numpy
-from jitcxde_common import jitcxde,handle_input,render_and_write_code
-from numpy.testing import assert_allclose
+import os
+import platform
+import shutil
+from tempfile import mkdtemp
+import unittest
 
-class jitcxde_tester(jitcxde):
-	def __init__(self, f_sym=(), n=None, verbose=True, module_location=None):
-		jitcxde.__init__(self,verbose,module_location)
-		self.f_sym, self.n = handle_input(f_sym,n)
-	
-	def _default_arguments(self):
-		basics = [
-			("Y", "PyArrayObject *__restrict const")
-			]
-		return basics
-	
-	def generate_f_C(self, chunk_size=100):
-		f_sym_wc = (entry for entry in self.f_sym())
-		
-		arguments = self._default_arguments()
-		
-		set_dy = sympy.Function("set_dy")
-		render_and_write_code(
-			(set_dy(i,entry) for i,entry in enumerate(f_sym_wc)),
-			self._tmpfile,
-			"f",
-			["set_dy", "y"],
-			chunk_size = chunk_size,
-			arguments = arguments+[("dY", "PyArrayObject *__restrict const")]
-			)
-	
-	def _compile_C(self):
-		if self.jitced is None:
-			self.compile_C()
-	
-	def compile_C(
-		self,
-		extra_compile_args = None,
-		extra_link_args = None,
-		verbose = False,
-		modulename = None
-		):
-		
-		self._process_modulename(modulename)
-		self._render_template(n = self.n)
-		self._compile_and_load(verbose,extra_compile_args,extra_link_args)
+import sympy
+from numpy.testing import assert_allclose
+import numpy
+
+from jitcxde_common import jitcxde,handle_input,render_and_write_code
 
 y = sympy.Function("y")
 f = [
@@ -66,12 +31,38 @@ def f_control(y):
 		5,
 	]
 
-import os
-from jitcxde_common import add_suffix
-import platform
-import shutil
-import unittest
-from tempfile import mkdtemp
+def f_generator():
+	for entry in f:
+		yield entry
+
+
+class jitcxde_tester(jitcxde):
+	def __init__(self,f_sym=(),n=None,module_location=None,chunk_size=100):
+		jitcxde.__init__(self,False,module_location)
+		f_sym_wc,self.n = handle_input(f_sym,n)
+		set_dy = sympy.Function("set_dy")
+		
+		render_and_write_code(
+			(set_dy(i,entry) for i,entry in enumerate(f_sym_wc())),
+			tmpfile = self._tmpfile,
+			name = "f",
+			functions = ["set_dy", "y"],
+			chunk_size = chunk_size,
+			arguments = [
+					("Y" , "PyArrayObject *__restrict const"),
+					("dY", "PyArrayObject *__restrict const")
+				]
+			)
+	
+	def _compile_C(self):
+		if self.jitced is None:
+			self.compile_C()
+	
+	def compile_C(self,modulename=None):
+		self._process_modulename(modulename)
+		self._render_template(n=self.n)
+		self._compile_and_load(False,None,None)
+
 
 name = ""
 def get_unique_name():
@@ -86,31 +77,21 @@ class basic_test(unittest.TestCase):
 	@classmethod
 	def setUpClass(self):
 		self.argdict = {"f_sym": f}
-		
+	
 	def setUp(self):
 		self.directory = mkdtemp()
+		self.tester = jitcxde_tester(**self.argdict)
 	
 	def test_default(self):
-		self.tester = jitcxde_tester(**self.argdict)
-		self.tester.generate_f_C()
-		self.tester.compile_C()
-	
-	def test_heavily_chunked(self):
-		self.tester = jitcxde_tester(**self.argdict)
-		self.tester.generate_f_C(chunk_size=1)
 		self.tester.compile_C()
 	
 	def test_save_and_load(self):
-		self.tester = jitcxde_tester(**self.argdict)
-		self.tester.generate_f_C()
 		destination = self.tester.save_compiled(overwrite=True)
 		folder, filename = os.path.split(destination)
 		shutil.move(filename,self.tmpfile(filename))
 		self.tester = jitcxde_tester(module_location=self.tmpfile(filename))
 		
 	def test_compile_save_and_load(self,default=False):
-		self.tester = jitcxde_tester(**self.argdict)
-		self.tester.generate_f_C()
 		modulename = None if default else get_unique_name()
 		self.tester.compile_C(modulename=modulename)
 		filename = self.tester.save_compiled(overwrite=True)
@@ -121,8 +102,6 @@ class basic_test(unittest.TestCase):
 		self.test_compile_save_and_load(True)
 	
 	def test_save_to_directory_and_load(self):
-		self.tester = jitcxde_tester(**self.argdict)
-		self.tester.generate_f_C()
 		modulename = get_unique_name()
 		self.tester.compile_C(modulename=modulename)
 		destination = self.tester.save_compiled(self.tmpfile(""), overwrite=True)
@@ -132,7 +111,7 @@ class basic_test(unittest.TestCase):
 		self.tester = jitcxde_tester(module_location=self.tmpfile(filename))
 	
 	def tearDown(self):
-		arg = numpy.random.random(5)
+		arg = numpy.random.uniform(-2,2,5)
 		assert_allclose(
 				self.tester.jitced.f(arg),
 				f_control(arg)
@@ -142,14 +121,15 @@ class basic_test(unittest.TestCase):
 			# Windows blocks loaded module files from removal.
 			shutil.rmtree(self.directory)
 
-def f_generator():
-	for entry in f:
-		yield entry
+class basic_test_with_chunking(basic_test):
+	@classmethod
+	def setUpClass(self):
+		self.argdict = {"f_sym":f, "chunk_size":1}
 
 class basic_test_with_generator_function(basic_test):
 	@classmethod
 	def setUpClass(self):
-		self.argdict = {"f_sym": f_generator, "n": len(f)}
+		self.argdict = {"f_sym":f_generator, "n":len(f)}
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)
