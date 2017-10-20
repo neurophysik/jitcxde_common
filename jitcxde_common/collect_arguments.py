@@ -1,5 +1,4 @@
-from __future__ import print_function, division, with_statement
-from sympy import preorder_traversal
+from symengine.lib.symengine_wrapper import FunctionSymbol
 
 def collect_arguments(expression, function):
 	"""
@@ -14,8 +13,9 @@ def collect_arguments(expression, function):
 		list of all arguments with which `function` is called within `expression`.
 	"""
 	
-	arguments = set()
-	for subexpression in preorder_traversal(expression):
-		if subexpression.__class__ == function:
-			arguments.add(subexpression.args)
-	return arguments
+	if ( expression.__class__ == FunctionSymbol
+			and expression.get_name() == function.name ):
+		return {expression.args}
+	else:
+		return set().union(*(collect_arguments(arg, function) for arg in expression.args))
+
