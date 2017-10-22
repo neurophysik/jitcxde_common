@@ -26,8 +26,8 @@ def collect_arguments(expression, function):
 
 def count_calls(expression,function):
 	"""
-	Counts the calls of `function` within expression.
-	Similar to SymPy’s count.
+	Counts the calls of `function` within `expression`.
+	Similar to SymPy’s `count`.
 	"""
 	result = 0
 	
@@ -38,6 +38,22 @@ def count_calls(expression,function):
 	result += sum( count_calls(arg,function) for arg in expression.args )
 	
 	return result
+
+def has_function(expression,function):
+	"""
+	Checks whether `function` is called within `expression`.
+	Similar to SymPy’s `has`.
+	"""
+	
+	if ( expression.__class__ == FunctionSymbol
+			and expression.get_name() == function.name ):
+		return True
+	
+	for arg in expression.args:
+		if has_function(arg,function):
+			return True
+	
+	return False
 
 def ordered_subs(expression,substitutions):
 	for substitution in substitutions:
