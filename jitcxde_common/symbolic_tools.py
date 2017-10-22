@@ -20,6 +20,6 @@ def collect_arguments(expression, function):
 		return set().union(*(collect_arguments(arg, function) for arg in expression.args))
 
 def ordered_subs(expression,substitutions):
-	for substitutions in substitutions:
+	for substitution in substitutions:
 		expression = expression.subs(*substitution)
 	return expression
