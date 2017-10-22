@@ -74,24 +74,33 @@ class jitcxde(object):
 			self.jitced = None
 			self.compile_attempt = None
 	
-	def _handle_input(self,f_sym):
+	def _handle_input(self,f_sym,n_basic=False):
 		"""
 		Converts f_sym to a generator function, if necessary.
-		Ensures that self.n is the length of f_sym, if not predefined.
+		Ensures that self.n (or self.n_basic) is the length of f_sym, if not predefined.
 		"""
+		
+		n = self.n_basic if n_basic else self.n
+		
 		if isgeneratorfunction(f_sym):
-			if self.n is None:
-				self.n = sum(1 for _ in f_sym())
-			return lambda: (sympify(entry) for entry in f_sym())
-		elif len(f_sym) == 0:
-			return lambda: f_sym
+			length = n or sum(1 for _ in f_sym())
 		else:
-			if self.n is None:
-				self.n = len(f_sym)
-			else:
-				if self.n != len(f_sym):
-					raise ValueError("len(f_sym) and n do not match.")
-			return lambda: (sympify(entry) for entry in f_sym)
+			length = len(f_sym) or n
+			# (allowing 0-length f_syms for testing purposes only)
+		
+		if n is not None and length != n:
+			raise ValueError("len(f_sym) and n do not match.")
+		
+		if n_basic: self.n_basic = length
+		else:       self.n       = length
+		
+		def new_f_sym():
+			gen = f_sym() if isgeneratorfunction(f_sym) else f_sym
+			for entry in gen:
+				yield sympify(entry)
+		
+		return new_f_sym
+
 	
 	def _tmpfile(self,filename=None):
 		if self._tmpdir is None:
