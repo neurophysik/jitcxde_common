@@ -31,7 +31,6 @@ def filter_helpers(helpers,symbols):
 	filters a list of helpers to contain only those listed in symbols and those needed for calculating them.
 	"""
 	needed = set(symbols) # convert and copy
-	
 	filtered_rev = []
 	for helper in reversed(helpers):
 		if helper[0] in needed:

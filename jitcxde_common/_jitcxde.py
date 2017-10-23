@@ -16,9 +16,9 @@ from jinja2 import Environment, FileSystemLoader
 from symengine.printing import ccode
 from symengine import sympify
 
-from .module_handling import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
+from .modules import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
 from .strings import count_up
-from .code_rendering import write_in_chunks, codelines
+from .code import write_in_chunks, codelines
 
 #: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymEngine uses the `pow` function for small integer powers (`SymPy Issue 8997`_).
 DEFAULT_COMPILE_ARGS = [

@@ -1,9 +1,8 @@
-from .strings import remove_suffix, ensure_suffix, count_up
-from .numerical import random_direction, orthonormalise, rel_dist
-from .symbolic_tools import collect_arguments, ordered_subs, count_calls, has_function
-from .helper_handling import sort_helpers, sympify_helpers, copy_helpers, filter_helpers
-from .module_handling import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
-from ._jitcxde import jitcxde, DEFAULT_COMPILE_ARGS, DEFAULT_LINK_ARGS, MSVC_COMPILE_ARGS,MSVC_LINK_ARGS
+from sys import version_info
+if version_info < (3,3):
+	raise NotImplementedError("Python versions below 3.3 are not supported anymore (or never were). Please upgrade to a newer Python version.")
+
+from ._jitcxde import jitcxde, DEFAULT_COMPILE_ARGS, DEFAULT_LINK_ARGS, MSVC_COMPILE_ARGS, MSVC_LINK_ARGS
 
 try:
 	from .version import version as __version__

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from jitcxde_common.helper_handling import sort_helpers, filter_helpers, copy_helpers
+from jitcxde_common.helpers import sort_helpers, filter_helpers, copy_helpers
 import unittest
 from symengine import symbols
 from itertools import permutations

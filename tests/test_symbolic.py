@@ -1,6 +1,6 @@
 import unittest
 from symengine import Function, Symbol, sin, Integer
-from jitcxde_common.symbolic_tools import collect_arguments, count_calls, has_function
+from jitcxde_common.symbolic import collect_arguments, count_calls, has_function
 
 f = Function("f")
 g = Function("g")
