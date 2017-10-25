@@ -3,19 +3,26 @@ import os
 from unittest.mock import MagicMock as Mock
 from setuptools_scm import get_version
 
-# Mocking to make RTD autobuild the documentation.
-autodoc_mock_imports = [ 'numpy', 'symengine', 'symengine.printing', '.' ]
+# Mocking to make RTD autobuild the documentation. (Doesn’t suffice.)
+# autodoc_mock_imports = [ 'numpy', 'symengine', '.' ]
+
+MOCK_MODULES = [
+	'numpy', 'numpy.testing', 'numpy.random',
+	'symengine', 'symengine.printing',
+	'.'
+]
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 sys.path.insert(0,os.path.abspath("../jitcxde_common"))
 
 needs_sphinx = '1.3'
 
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.mathjax',
-    'numpydoc',
-]
+		'sphinx.ext.autodoc',
+		'sphinx.ext.autosummary',
+		'sphinx.ext.mathjax',
+		'numpydoc',
+	]
 
 source_suffix = '.rst'
 
