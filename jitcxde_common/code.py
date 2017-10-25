@@ -1,6 +1,6 @@
 from itertools import chain
 from symengine.printing import ccode
-from .strings import count_up
+from jitcxde_common.strings import count_up
 
 def codelines(expressions):
 	for expression in expressions:

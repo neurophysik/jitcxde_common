@@ -9,8 +9,8 @@ In the following, *JiTC*DE* refers to any of the aforementioned modules.
 Installation
 ------------
 
-Linux (and other Unixes, like MacOS)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Unix (Linux, MacOS, …)
+^^^^^^^^^^^^^^^^^^^^^^
 
 *	Usually, you will already have a C compiler installed and need not worry about this step.
 	Otherwise, it should be easy to install GCC or Clang through your package manager.
@@ -25,7 +25,7 @@ Linux (and other Unixes, like MacOS)
 		pip3 install jitcode --user
 	
 	Replace `jitcode` with `jitcdde` or `jitcsde` if that’s what you want.
-	Replace `pip3` with `pip` if you are working in an environment or with Python 2.
+	Replace `pip3` with `pip` if you are working in an environment.
 
 Windows (Anaconda)
 ^^^^^^^^^^^^^^^^^^
@@ -43,6 +43,8 @@ Windows (Anaconda)
 		pip install jitcode --user
 	
 	Replace `jitcode` with `jitcdde` or `jitcsde` if that’s what you want.
+
+.. _large_systems:
 
 Networks or other very large differential equations
 ---------------------------------------------------
@@ -82,7 +84,7 @@ Choosing the Module Name
 ------------------------
 
 The only reason why you may want to change the module name is if you want to save the module file for later use (with `save_compiled`).
-To do this use the `modulename` argument of the `compile_C` command.
+To do this, use the `modulename` argument of the `compile_C` command.
 If this argument is `None` or empty, the filename will be chosen by JiTC*DE based on previously used filenames or default to `jitced.so`.
 
 Note that it is not possible to re-use a modulename for a given instance of Python (due to the limitations of Python’s import machinery).
@@ -97,7 +99,7 @@ You may want to modify the these arguments for two reasons:
 * To tweak the compilation process and results.
 * To make JiTC*DE run with a compiler that doesn’t recognise the default arguments.
 
-In most situation, it’s best not to write your own list, but modify the defaults listed below.
+Often, it’s best not to write your own list, but modify the defaults listed below.
 These can be imported from `jitcxde_common` like this:
 
 .. code-block:: python
@@ -106,9 +108,9 @@ These can be imported from `jitcxde_common` like this:
 
 You can then modify them before usage, e.g., like this:
 
-. code-block:: python
+.. code-block:: python
 
-	ODE.compile_C(extra_compile_args = DEFAULT_COMPILE_ARGS + ["--my-flag"])
+	ODE.compile_C( extra_compile_args = DEFAULT_COMPILE_ARGS + ["--my-flag"] )
 
 This way you get the most of future versions of JiTC*DE.
 
@@ -118,7 +120,6 @@ Note that in either case, these arguments are appended to (and thus override) wh
 	:members:
 	:exclude-members: jitcxde
 
-.. _large_systems:
 
 Common Mistakes
 ---------------
@@ -126,15 +127,13 @@ Common Mistakes
 *	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymEngine variants.
 	For example, instead of `math.sin` or `numpy.sin`, you have to use `symengine.sin`.
 
-*	If JiTC*DE is too slow, check whether you deactivated simplifications and common-subexpression eliminations, used a generator and avoided `SymPy Issue 4596`_.
+*	If JiTC*DE’s code generation and compilation is too slow or bursts your memory, check whether you deactivated simplifications and common-subexpression eliminations and used a generator and chunking. Also consider using Clang as a compiler.
 
 .. _JiTCODE: https://github.com/neurophysik/jitcode
 
 .. _JiTCDDE: https://github.com/neurophysik/jitcdde
 
 .. _JiTCSDE: https://github.com/neurophysik/jitcsde
-
-.. _SymPy Issue 4596: https://github.com/sympy/sympy/issues/4596
 
 .. _SymPy Issue 8997: https://github.com/sympy/sympy/issues/8997
 

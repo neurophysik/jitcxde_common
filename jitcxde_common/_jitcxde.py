@@ -20,7 +20,7 @@ from .modules import get_module_path, modulename_from_path, find_and_load_module
 from .strings import count_up
 from .code import write_in_chunks, codelines
 
-#: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymEngine uses the `pow` function for small integer powers (`SymPy Issue 8997`_).
+#: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymEngine uses the `pow` function for small integer powers (cf. `SymPy Issue 8997`_).
 DEFAULT_COMPILE_ARGS = [
 			"-std=c11",
 			"-Ofast",
@@ -58,7 +58,7 @@ class build_ext_with_compiler_detection(build_ext):
 
 class jitcxde(object):
 	"""
-	A base class containing elementary, common functionalities of all JiTC*DE projects – mostly file handling. It is pretty dysfunctional on its own and only made to be inherited from.
+	A base class containing elementary, common functionalities of all JiTC*DE projects – mostly file and input handling. It is pretty dysfunctional on its own and only made to be inherited from.
 	"""
 	
 	def __init__(self,n=None,verbose=True,module_location=None):
