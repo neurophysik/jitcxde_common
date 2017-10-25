@@ -120,6 +120,20 @@ Note that in either case, these arguments are appended to (and thus override) wh
 	:members:
 	:exclude-members: jitcxde
 
+SymPy vs SymEngine
+------------------
+
+`SymPy`_’s core is completely written in Python and hence rather slow.
+Eventually, this core shall be replaced by a faster, compiled one: `SymEngine`_, more specifically the SymEngine Python wrapper.
+SymEngine is not yet ready for this, but it already has everything needed for JiTC*DE’s purpose, except for some side features like common-subexpression elimination and lambdification (only for JiCDDE).
+By using SymEngine instead of SymPy, code generation in JiTC*DE is up to nine hundred times faster.
+
+Pratically, you can use both SymPy and SymEngine to provide the input to JiTC*DE, as they are compatible with each other.
+However, using SymPy may considerably slow down code generation.
+Also, some advanced features of SymPy may not translate to SymEngine, but so far the only one I can see making sense in a typical JiTC*DE application ar SymPy’s sums and those can be easily replaced by Python sums.
+
+Note that while SymEngine’s Python wrapper is sparsely documented, almost everything that is relevant to JiTC*DE behaves analogously to SymPy and the latter’s documentation serves as a documentation for SymEngine as well.
+For this reason, JiTC*DE’s documentation also often links to SymPy’s documentation when talking about SymEngine features.
 
 Common Mistakes
 ---------------
@@ -127,7 +141,12 @@ Common Mistakes
 *	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymEngine variants.
 	For example, instead of `math.sin` or `numpy.sin`, you have to use `symengine.sin`.
 
-*	If JiTC*DE’s code generation and compilation is too slow or bursts your memory, check whether you deactivated simplifications and common-subexpression eliminations and used a generator and chunking. Also consider using Clang as a compiler.
+*	If JiTC*DE’s code generation and compilation is too slow or bursts your memory, check:
+	* Did you deactivate simplifications and common-subexpression eliminations?
+	* Did you use a generator?
+	* Did you use chunking?
+	* Did you use SymEngine symbols and functions instead of SymPy ones?
+	* Consider using Clang as a compiler.
 
 .. _JiTCODE: https://github.com/neurophysik/jitcode
 
@@ -138,3 +157,8 @@ Common Mistakes
 .. _SymPy Issue 8997: https://github.com/sympy/sympy/issues/8997
 
 .. _example of a network: https://jitcode.readthedocs.io/#module-SW_of_Roesslers
+
+.. _SymEngine: https://github.com/symengine/symengine
+
+.. _SymPy: http://www.sympy.org/
+
