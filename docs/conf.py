@@ -4,7 +4,7 @@ from unittest.mock import MagicMock as Mock
 from setuptools_scm import get_version
 
 # Mocking to make RTD autobuild the documentation.
-autodoc_mock_imports = [ 'numpy', '.' ]
+autodoc_mock_imports = [ 'numpy', 'symengine', '.' ]
 
 sys.path.insert(0,os.path.abspath("../jitcxde_common"))
 
