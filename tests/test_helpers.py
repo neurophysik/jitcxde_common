@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from jitcxde_common.helpers import sort_helpers, filter_helpers, copy_helpers
