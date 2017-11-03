@@ -1,5 +1,10 @@
 class GroupHandler(object):
 	def __init__(self,groups):
+		n = max(max(group) for group in groups)+1
+		assert all(all(0<=i<n for i in group) for group in groups), "Group elements out of range."
+		assert set().union(*groups)==set(range(n)), "Groups do not cover all indices."
+		assert sum(map(len,groups))==n, "Groups overlap."
+		
 		self.groups = groups
 		self._group_finder = None
 	

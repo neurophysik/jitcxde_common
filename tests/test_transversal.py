@@ -34,6 +34,16 @@ class TestFinderAndIterator(unittest.TestCase):
 			]
 		self.assertSequenceEqual(sequence,expected)
 
+class TestErrors(unittest.TestCase):
+	def test_missing_indices(self):
+		groups = [(0,1),(3,4)]
+		with self.assertRaises(AssertionError):
+			GroupHandler(groups)
+	
+	def test_duplicte_indices(self):
+		groups = [(0,1),(1,2,3,4)]
+		with self.assertRaises(AssertionError):
+			GroupHandler(groups)
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)
