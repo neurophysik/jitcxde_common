@@ -13,7 +13,7 @@ class GroupHandler(object):
 	@property
 	def main_indices(self):
 		if not hasattr(self,"_main_indices"):
-			self._main_indices = map(min,self.groups)
+			self._main_indices = [min(group) for group in self.groups]
 		return self._main_indices
 	
 	def group_from_index(self,index):
@@ -74,7 +74,6 @@ class GroupHandler(object):
 				else:
 					A[i,entry[0]] =  1
 					A[i,entry[1]] = -1
-			
 			self._A_inv = symengine.sympify(A.inv())
 			
 			for j in self.main_indices:
