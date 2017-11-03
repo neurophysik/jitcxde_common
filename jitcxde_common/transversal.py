@@ -1,6 +1,10 @@
 import symengine
 
 class GroupHandler(object):
+	"""
+	Class to handle groups of synchronised variables for transversal Lyapunov exponents. Main indices are those that represent the normal dynamics, tangent indices are those that belong to tangent vectors.
+	"""
+	
 	def __init__(self,groups):
 		self.n = max(max(group) for group in groups)+1
 		assert all(all(0<=i<self.n for i in group) for group in groups), "Group elements out of range."
@@ -38,7 +42,10 @@ class GroupHandler(object):
 		return self.group_finder[index]
 	
 	def iterate(self,iterable):
-		"""returns two consecutive elements from `iterable` belonging to the same group. Returns the group index for the first item."""
+		"""
+		For a main index, return the number of the respective group.
+		For a tangent index, returns the respective element and the preceding one in the same group.
+		"""
 		
 		cache = {}
 		for k,entry in enumerate(iterable):
