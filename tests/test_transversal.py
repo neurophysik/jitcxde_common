@@ -1,4 +1,5 @@
 import unittest
+import symengine
 from jitcxde_common.transversal import GroupHandler
 
 class TestOrdered(unittest.TestCase):
@@ -35,6 +36,26 @@ class TestOrdered(unittest.TestCase):
 		self.assertSequenceEqual(sequence,original)
 		for i in self.G.main_indices:
 			self.assertEqual(extracted[i],original[i])
+	
+	def test_back_transform(self):
+		z = symengine.Function("z")
+		
+		z_v = [z(i) for i in range(self.n)]
+		for i in self.G.main_indices:
+			z_v[i] = 0
+		y_v = self.G.back_transform(z_v)
+		
+		transformed = []
+		for entry in self.G.iterate(range(self.n)):
+			if type(entry)==int:
+				transformed.append( sum(y_v[i] for i in self.groups[entry]) )
+			else:
+				transformed.append( y_v[entry[0]] - y_v[entry[1]] )
+		
+		self.assertSequenceEqual(
+				z_v,
+				[entry.simplify() for entry in transformed]
+			)
 
 class TestAlternating(unittest.TestCase):
 	@classmethod
