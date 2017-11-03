@@ -16,6 +16,16 @@ class GroupHandler(object):
 			self._main_indices = [min(group) for group in self.groups]
 		return self._main_indices
 	
+	@property
+	def tangent_indices(self):
+		if not hasattr(self,"_tangent_indices"):
+			self._tangent_indices = [
+					i
+					for group in self.groups
+					for i in group[1:]
+				]
+		return self._tangent_indices
+	
 	def group_from_index(self,index):
 		"""returns the number of the group which contains `i`."""
 		

@@ -8,6 +8,7 @@ class TestOrdered(unittest.TestCase):
 		self.n = 6
 		self.groups = [ [0,1,2], [3,4,5] ]
 		self.main_indices = [0,3]
+		self.tangent_indices = [1,2,4,5]
 		self.iteration = [ 0 , (0,1), (1,2), 1 , (3,4), (4,5) ]
 	
 	def setUp(self):
@@ -27,6 +28,12 @@ class TestOrdered(unittest.TestCase):
 		self.assertSequenceEqual(
 				list(self.G.main_indices),
 				self.main_indices
+			)
+	
+	def test_tangent_indices(self):
+		self.assertSequenceEqual(
+				list(self.G.tangent_indices),
+				self.tangent_indices
 			)
 	
 	def test_extractor(self):
@@ -62,6 +69,7 @@ class TestAlternating(unittest.TestCase):
 	def setUpClass(self):
 		self.groups = [ [0,2,4], [1,3,5] ]
 		self.main_indices = [0,1]
+		self.tangent_indices = [2,3,4,5]
 		self.iteration = [ 0 , 1 , (0,2), (1,3), (2,4), (3,5) ]
 
 class TestErrors(unittest.TestCase):
