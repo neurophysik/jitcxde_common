@@ -1,10 +1,15 @@
 import unittest
-from jitcxde_common.transversal import group_handler
+from jitcxde_common.transversal import GroupHandler
 
-class TestGroupFinder(unittest.TestCase):
+class TestFinderAndIterator(unittest.TestCase):
 	def test_ordered_groups(self):
 		groups = [ [0,1,2], [3,4,5] ]
-		handler = group_handler(groups,range(6))
+		G = GroupHandler(groups)
+		
+		for i in range(6):
+			self.assertIn(i,groups[G.group_from_index(i)])
+		
+		sequence = list(G.iterate(range(6)))
 		expected = [
 				  0  ,
 				(0,1),
@@ -13,11 +18,12 @@ class TestGroupFinder(unittest.TestCase):
 				(3,4),
 				(4,5)
 			]
-		self.assertSequenceEqual(list(handler),expected)
+		self.assertSequenceEqual(sequence,expected)
 	
 	def test_alternating_groups(self):
 		groups = [ [0,2,4], [1,3,5] ]
-		handler = group_handler(groups,range(6))
+		G = GroupHandler(groups)
+		sequence = list(G.iterate(range(6)))
 		expected = [
 				  0  ,
 				  1  ,
@@ -26,7 +32,7 @@ class TestGroupFinder(unittest.TestCase):
 				(2,4),
 				(3,5)
 			]
-		self.assertSequenceEqual(list(handler),expected)
+		self.assertSequenceEqual(sequence,expected)
 
 
 if __name__ == "__main__":
