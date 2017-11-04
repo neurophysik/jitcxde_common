@@ -48,8 +48,6 @@ class TestOrdered(unittest.TestCase):
 		z = symengine.Function("z")
 		
 		z_v = [z(i) for i in range(self.n)]
-		for i in self.G.main_indices:
-			z_v[i] = 0
 		y_v = self.G.back_transform(z_v)
 		
 		transformed = []
@@ -59,6 +57,8 @@ class TestOrdered(unittest.TestCase):
 			else:
 				transformed.append( y_v[entry[0]] - y_v[entry[1]] )
 		
+		for i in self.G.main_indices:
+			z_v[i] = 0
 		self.assertSequenceEqual(
 				z_v,
 				[entry.simplify() for entry in transformed]
