@@ -16,7 +16,7 @@ class GroupHandler(object):
 	@property
 	def main_indices(self):
 		if not hasattr(self,"_main_indices"):
-			self._main_indices = [min(group) for group in self.groups]
+			self._main_indices = [group[0] for group in self.groups]
 		return self._main_indices
 	
 	@property
