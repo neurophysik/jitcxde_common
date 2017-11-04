@@ -1,12 +1,20 @@
 from symengine.lib.symengine_wrapper import FunctionSymbol
 
+def is_call(expression,function):
+	"""
+	whether expression is a call of function
+	"""
+	return (
+			expression.__class__ == FunctionSymbol and
+			expression.get_name() == function.name
+		)
+
 def function_visitor(expression,function):
 	"""
 	Generator function that yields all subexpressions of `expression` that are an instance of `function`.
 	"""
 	
-	if ( expression.__class__ == FunctionSymbol
-			and expression.get_name() == function.name ):
+	if is_call(expression,function):
 		yield expression
 	
 	for arg in expression.args:
@@ -66,8 +74,7 @@ def replace_function(expression,function,new_function):
 				replace_function(arg,function,new_function)
 				for arg in expression.args
 			)
-		if ( expression.__class__ == FunctionSymbol
-				and expression.get_name() == function.name ):
+		if is_call(expression,function):
 			return new_function(*replaced_args)
 		else:
 			return expression.func(*replaced_args)
