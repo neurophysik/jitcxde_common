@@ -11,8 +11,7 @@ class GroupHandler(object):
 		assert set().union(*groups)==set(range(self.n)), "Groups do not cover all indices."
 		assert sum(map(len,groups))==self.n, "Groups overlap."
 		
-		self.groups = groups
-		self._group_finder = None
+		self.groups = [sorted(group) for group in groups]
 	
 	@property
 	def main_indices(self):
@@ -33,13 +32,13 @@ class GroupHandler(object):
 	def group_from_index(self,index):
 		"""returns the number of the group which contains `i`."""
 		
-		if self._group_finder is None:
-			self.group_finder = {}
+		if not hasattr(self,"_group_finder"):
+			self._group_finder = {}
 			for k,group in enumerate(self.groups):
 				for entry in group:
-					self.group_finder[entry] = k
+					self._group_finder[entry] = k
 		
-		return self.group_finder[index]
+		return self._group_finder[index]
 	
 	def iterate(self,iterable):
 		"""
@@ -82,19 +81,20 @@ class GroupHandler(object):
 	
 	def back_transform(self,vector):
 		if not hasattr(self,"_A_inv"):
-			import sympy
-			A = sympy.zeros(self.n,self.n)
-			for i,entry in enumerate(self.iterate(range(self.n))):
-				if type(entry)==int:
-					for j in self.groups[entry]:
-						A[i,j]=1
-				else:
-					A[i,entry[0]] =  1
-					A[i,entry[1]] = -1
-			self._A_inv = symengine.sympify(A.inv())
+			self._A_inv = symengine.zeros(self.n,self.n)
 			
-			for j in self.main_indices:
-				for i in range(self.n):
-					self._A_inv[i,j] = 0
+			for group in self.groups:
+				# Uppercase numbers are indices of the respective submatrix, lowercase numbers are indices of the full matrix
+				
+				N = symengine.Integer(len(group))
+				for I in range(len(group)):
+					i = group[I]
+					for J in range(1,I+1):
+						j = group[J]
+						self._A_inv[i,j] = -J/N
+					for J in range(I+1,len(group)):
+						j = group[J]
+						self._A_inv[i,j] = 1-J/N
+		
 		return self._A_inv*symengine.Matrix(vector)
 		
