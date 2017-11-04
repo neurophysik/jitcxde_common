@@ -6,10 +6,11 @@ class GroupHandler(object):
 	"""
 	
 	def __init__(self,groups):
-		self.n = max(max(group) for group in groups)+1
-		assert all(all(0<=i<self.n for i in group) for group in groups), "Group elements out of range."
-		assert set().union(*groups)==set(range(self.n)), "Groups do not cover all indices."
-		assert sum(map(len,groups))==self.n, "Groups overlap."
+		flattened_groups = [i for group in groups for i in group]
+		self.n = max(flattened_groups)+1
+		assert all(0<=i<self.n for i in flattened_groups), "Group elements out of range."
+		assert set(flattened_groups)==set(range(self.n)), "Groups do not cover all indices."
+		assert len(flattened_groups)==self.n, "Groups overlap."
 		
 		self.groups = [sorted(group) for group in groups]
 	
