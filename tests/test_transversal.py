@@ -31,7 +31,7 @@ class TestOrdered(unittest.TestCase):
 			)
 	
 	def test_tangent_indices(self):
-		self.assertSequenceEqual(
+		self.assertCountEqual(
 				list(self.G.tangent_indices),
 				self.tangent_indices
 			)
@@ -64,9 +64,10 @@ class TestOrdered(unittest.TestCase):
 				[entry.simplify() for entry in transformed]
 			)
 
-class TestAlternating(unittest.TestCase):
+class TestAlternating(TestOrdered):
 	@classmethod
 	def setUpClass(self):
+		self.n = 6
 		self.groups = [ [0,2,4], [1,3,5] ]
 		self.main_indices = [0,1]
 		self.tangent_indices = [2,3,4,5]
