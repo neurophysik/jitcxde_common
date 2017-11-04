@@ -80,21 +80,19 @@ class GroupHandler(object):
 		return extractor,extracted_entries
 	
 	def back_transform(self,vector):
-		if not hasattr(self,"_A_inv"):
-			self._A_inv = symengine.zeros(self.n,self.n)
+		result = [0]*self.n
+		for group in self.groups:
+			# Uppercase numbers are indices of the respective submatrix, lowercase numbers are indices of the full matrix
 			
-			for group in self.groups:
-				# Uppercase numbers are indices of the respective submatrix, lowercase numbers are indices of the full matrix
-				
-				N = symengine.Integer(len(group))
-				for I in range(len(group)):
-					i = group[I]
-					for J in range(1,I+1):
-						j = group[J]
-						self._A_inv[i,j] = -J/N
-					for J in range(I+1,len(group)):
-						j = group[J]
-						self._A_inv[i,j] = 1-J/N
+			N = symengine.Integer(len(group))
+			for I in range(len(group)):
+				i = group[I]
+				for J in range(1,I+1):
+					j = group[J]
+					result[i] +=   -J/N *vector[j]
+				for J in range(I+1,len(group)):
+					j = group[J]
+					result[i] += (1-J/N)*vector[j]
 		
-		return self._A_inv*symengine.Matrix(vector)
+		return result
 		
