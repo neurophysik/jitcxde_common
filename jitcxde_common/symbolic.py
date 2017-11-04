@@ -55,3 +55,20 @@ def ordered_subs(expression,substitutions):
 		expression = expression.subs(*substitution)
 	return expression
 
+def replace_function(expression,function,new_function):
+	"""
+		To bypass SymPy issue #1356.
+	"""
+	if expression.is_Atom:
+		return expression
+	else:
+		replaced_args = (
+				replace_function(arg,function,new_function)
+				for arg in expression.args
+			)
+		if ( expression.__class__ == FunctionSymbol
+				and expression.get_name() == function.name ):
+			return new_function(*replaced_args)
+		else:
+			return expression.func(*replaced_args)
+
