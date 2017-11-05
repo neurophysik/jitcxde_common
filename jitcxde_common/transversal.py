@@ -41,6 +41,9 @@ class GroupHandler(object):
 		
 		return self._group_finder[index]
 	
+	def map_to_main(self,index):
+		return self.main_indices[self.group_from_index(index)]
+	
 	def iterate(self,iterable):
 		"""
 		For a main index, return the number of the respective group.
