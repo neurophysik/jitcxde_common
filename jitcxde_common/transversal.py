@@ -62,9 +62,9 @@ class GroupHandler(object):
 			finally:
 				cache[i] = entry
 	
-	def extract_main(self,iterable):
+	def extract_main(self,generator_function):
 		"""
-		Extracts the elements corresponding to the main indices from `iterable`.
+		Extracts the elements corresponding to the main indices from `generator_function`.
 
 		Returns
 		-------
@@ -77,7 +77,7 @@ class GroupHandler(object):
 		
 		extracted_entries = {}
 		def extractor():
-			for i,entry in enumerate(iterable):
+			for i,entry in enumerate(generator_function()):
 				if i in self.main_indices:
 					extracted_entries[i] = entry
 				yield entry

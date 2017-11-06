@@ -38,7 +38,7 @@ class TestOrdered(unittest.TestCase):
 	
 	def test_extractor(self):
 		original = range(100,100+self.n)
-		extractor,extracted = self.G.extract_main(original)
+		extractor,extracted = self.G.extract_main(lambda:original)
 		sequence = list(extractor())
 		self.assertSequenceEqual(sequence,original)
 		for i in self.G.main_indices:
