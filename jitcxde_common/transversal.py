@@ -23,11 +23,11 @@ class GroupHandler(object):
 	@property
 	def tangent_indices(self):
 		if not hasattr(self,"_tangent_indices"):
-			self._tangent_indices = [
+			self._tangent_indices = sorted([
 					i
 					for group in self.groups
 					for i in group[1:]
-				]
+				])
 		return self._tangent_indices
 	
 	def group_from_index(self,index):
