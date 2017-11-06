@@ -62,7 +62,7 @@ class RelDistTest(unittest.TestCase):
 	def test_reldist_2(self):
 		assert_allclose( rel_dist(1,1+1e-10), 1e-10 )
 	
-	def test_reldist_2(self):
+	def test_reldist_3(self):
 		assert_allclose( rel_dist([1,1],[1+1e-10,1]), 1e-10 )
 	
 if __name__ == "__main__":

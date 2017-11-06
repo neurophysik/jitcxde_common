@@ -13,7 +13,6 @@ from traceback import format_exc
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
-from symengine.printing import ccode
 from symengine import sympify
 
 from jitcxde_common.modules import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
