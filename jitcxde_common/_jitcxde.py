@@ -43,18 +43,6 @@ MSVC_COMPILE_ARGS = [
 #: A list with the default linker arguments for the Microsoft compiler.
 MSVC_LINK_ARGS = [ "/ignore:4197" ]
 
-class build_ext_with_compiler_detection(build_ext):
-	def build_extensions(self):
-		for extension in self.extensions:
-			if self.compiler.compiler_type=="msvc":
-				extension.extra_compile_args = MSVC_COMPILE_ARGS
-				extension.extra_link_args    = MSVC_LINK_ARGS
-			else:
-				extension.extra_compile_args = DEFAULT_COMPILE_ARGS
-				extension.extra_link_args    = DEFAULT_LINK_ARGS
-		
-		build_ext.build_extensions(self)
-
 class jitcxde(object):
 	"""
 	A base class containing elementary, common functionalities of all JiTC*DE projects – mostly file and input handling. It is pretty dysfunctional on its own and only made to be inherited from.
@@ -146,7 +134,8 @@ class jitcxde(object):
 			expressions,
 			name,
 			chunk_size = 100,
-			arguments = ()
+			arguments = (),
+			omp = True,
 			):
 		
 		with \
@@ -162,7 +151,8 @@ class jitcxde(object):
 						deffile,
 						name,
 						chunk_size,
-						arguments
+						arguments,
+						omp
 					)
 
 	def _attempt_compilation(self,reset=True):
@@ -177,15 +167,17 @@ class jitcxde(object):
 			if reset:
 				self.reset_integrator()
 	
-	def _compile_and_load(self,verbose,extra_compile_args,extra_link_args=None):
-		auto_args = extra_link_args is None and extra_compile_args is None
+	def _compile_and_load(self,
+				verbose,
+				extra_compile_args,
+				extra_link_args = None,
+				omp = False,
+			):
 		
 		extension = Extension(
 				self._modulename,
 				sources = [self.sourcefile],
-				extra_link_args = extra_link_args,
 				include_dirs = [numpy.get_include()],
-				extra_compile_args = extra_compile_args,
 				)
 		
 		script_args = [
@@ -193,15 +185,48 @@ class jitcxde(object):
 				"--build-lib", self._tmpfile(),
 				"--build-temp", self._tmpfile(),
 				"--force",
-				#"clean" #, "--all"
 				]
+		
+		if not omp:
+			omp = ( [], [] )
+		elif omp is True:
+			omp = ( ["-fopenmp"], ["-lomp"] )
+		
+		def determine_compile_args(is_msvc):
+			if extra_compile_args is None:
+				if is_msvc:
+					return omp[0] + MSVC_COMPILE_ARGS
+				else:
+					return omp[0] + DEFAULT_COMPILE_ARGS
+			else:
+				return omp[0] + extra_compile_args
+
+		def determine_link_args(is_msvc):
+			if extra_link_args is None:
+				if is_msvc:
+					return omp[1] + MSVC_LINK_ARGS
+				else:
+					return omp[1] + DEFAULT_LINK_ARGS
+			else:
+				return omp[1] + extra_link_args
+		
+		
+		class build_ext_with_compiler_detection(build_ext):
+			def build_extensions(self):
+				is_msvc = self.compiler.compiler_type=="msvc"
+				
+				for extension in self.extensions:
+					extension.extra_link_args = determine_link_args(is_msvc)
+					extension.extra_compile_args = determine_compile_args(is_msvc)
+				
+				build_ext.build_extensions(self)
 		
 		setup(
 			name = self._modulename,
 			ext_modules = [extension],
 			script_args = script_args,
 			verbose = verbose,
-			cmdclass = {'build_ext':build_ext_with_compiler_detection} if auto_args else {}
+			cmdclass = {'build_ext':build_ext_with_compiler_detection}
 			)
 		
 		self.jitced = find_and_load_module(self._modulename,self._tmpfile())

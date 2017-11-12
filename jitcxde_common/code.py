@@ -19,7 +19,7 @@ def codelines(expressions):
 def render_declarator(name, _type, size=0):
 	return _type + " " + name + ("[%i]"%size if size else "")
 
-def write_in_chunks(lines, mainfile, deffile, name, chunk_size, arguments):
+def write_in_chunks(lines,mainfile,deffile,name,chunk_size,arguments,omp=True):
 	funcname = "definitions_" + name
 	
 	first_chunk = []
@@ -32,15 +32,20 @@ def write_in_chunks(lines, mainfile, deffile, name, chunk_size, arguments):
 	else:
 		lines = chain(first_chunk, lines)
 		
+		if omp:
+			mainfile.write("#pragma omp parallel sections\n{\n")
+		
 		while True:
-			mainfile.write(funcname + "(")
+			if omp:
+				mainfile.write("#pragma omp section\n")
+			mainfile.write("{" + funcname + "(")
 			deffile.write("void " + funcname + "(")
 			if arguments:
 				mainfile.write(", ".join(argument[0] for argument in arguments))
 				deffile.write(", ".join(render_declarator(*argument) for argument in arguments))
 			else:
 				deffile.write("void")
-			mainfile.write(");\n")
+			mainfile.write(");}\n")
 			deffile.write("){\n")
 			
 			try:
@@ -52,4 +57,7 @@ def write_in_chunks(lines, mainfile, deffile, name, chunk_size, arguments):
 				deffile.write("}\n")
 			
 			funcname = count_up(funcname)
+		
+		if omp:
+			mainfile.write("}")
 

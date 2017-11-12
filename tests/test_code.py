@@ -36,10 +36,11 @@ def f_generator():
 
 
 class jitcxde_tester(jitcxde):
-	def __init__(self,f_sym=(),n=None,module_location=None,chunk_size=100):
+	def __init__(self,f_sym=(),n=None,module_location=None,chunk_size=100,omp=False):
 		jitcxde.__init__(self,n,False,module_location)
 		f_sym_wc = self._handle_input(f_sym)
 		set_dy = symengine.Function("set_dy")
+		self.omp = omp
 		
 		self.render_and_write_code(
 			(set_dy(i,entry) for i,entry in enumerate(f_sym_wc())),
@@ -58,7 +59,7 @@ class jitcxde_tester(jitcxde):
 	def compile_C(self,modulename=None):
 		self._process_modulename(modulename)
 		self._render_template(n=self.n)
-		self._compile_and_load(False,None,None)
+		self._compile_and_load(False,None,None,self.omp)
 
 
 name = ""
@@ -87,14 +88,14 @@ class basic_test(unittest.TestCase):
 		folder, filename = os.path.split(destination)
 		shutil.move(filename,self.tmpfile(filename))
 		self.tester = jitcxde_tester(module_location=self.tmpfile(filename))
-		
+	
 	def test_compile_save_and_load(self,default=False):
 		modulename = None if default else get_unique_name()
 		self.tester.compile_C(modulename=modulename)
 		filename = self.tester.save_compiled(overwrite=True)
 		shutil.move(filename, self.tmpfile(filename))
 		self.tester = jitcxde_tester(module_location=self.tmpfile(filename))
-		
+	
 	def test_save_with_default_name_and_load(self):
 		self.test_compile_save_and_load(True)
 	
@@ -122,6 +123,11 @@ class basic_test_with_chunking(basic_test):
 	@classmethod
 	def setUpClass(self):
 		self.argdict = {"f_sym":f, "chunk_size":1}
+
+class basic_test_with_omp(basic_test):
+	@classmethod
+	def setUpClass(self):
+		self.argdict = {"f_sym":f, "chunk_size":1, "omp":True}
 
 class basic_test_with_generator_function(basic_test):
 	@classmethod
