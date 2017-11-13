@@ -36,6 +36,11 @@ def write_in_chunks(lines,mainfile,deffile,name,chunk_size,arguments,omp=True):
 			mainfile.write("#pragma omp parallel sections\n{\n")
 		
 		while True:
+			try:
+				next_line = next(lines)
+			except StopIteration:
+				break
+			
 			if omp:
 				mainfile.write("#pragma omp section\n")
 			mainfile.write("{" + funcname + "(")
@@ -48,8 +53,9 @@ def write_in_chunks(lines,mainfile,deffile,name,chunk_size,arguments,omp=True):
 			mainfile.write(");}\n")
 			deffile.write("){\n")
 			
+			deffile.write(next_line)
 			try:
-				for _ in range(chunk_size):
+				for _ in range(chunk_size-1):
 					deffile.write(next(lines))
 			except StopIteration:
 				break
