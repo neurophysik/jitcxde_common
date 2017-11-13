@@ -126,6 +126,7 @@ SymPy vs SymEngine
 `SymPy`_’s core is completely written in Python and hence rather slow.
 Eventually, this core shall be replaced by a faster, compiled one: `SymEngine`_, more specifically the SymEngine Python wrapper.
 SymEngine is not yet ready for this, but it already has everything needed for JiTC*DE’s purpose, except for some side features like common-subexpression elimination and lambdification (only for JiCDDE).
+Also SymEngine internally resorts to SymPy for some features like simplification.
 By using SymEngine instead of SymPy, code generation in JiTC*DE is up to nine hundred times faster.
 
 Pratically, you can use both SymPy and SymEngine to provide the input to JiTC*DE, as they are compatible with each other.
