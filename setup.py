@@ -2,7 +2,7 @@ from setuptools import setup
 from io import open
 
 requirements = [
-	'symengine >0.3.0',
+	'symengine',
 	'numpy',
 	'jinja2',
 	'setuptools'
