@@ -9,6 +9,47 @@ In the following, *JiTC*DE* refers to any of the aforementioned modules.
 Installation
 ------------
 
+Building from source
+^^^^^^^^^^^^^^^^^^^^
+
+**Note: This is currently the only way to get the most recent SymEngine-based version.**
+
+*	Install SymEngine from source following the instructions `here <https://github.com/symengine/symengine>`_.
+	Unless a release has been made recently, there is no packaged version that suffices (see `Symengine.py Issue #204 <https://github.com/symengine/symengine.py/issues/204>`_).
+
+*	Install the SymEngine Python bindings from source following the instructions `here <https://github.com/symengine/symengine.py>`_.
+
+*	Install readily available required Python packages, namely Jinja 2, NumPy, SciPy, and Setuptools.
+
+*	Install JiTC*DE Common and the desired packages from GitHub.
+	The easiest way to do this is probably:
+	
+	.. code-block:: bash
+	
+		pip3 install git+git://github.com/neurophysik/jitcode
+	
+	Replace `jitcode` with `jitcxde_common`, `jitcdde`, or `jitcsde` accordingly.
+
+Here is a summary of commands for Ubuntu (that should be easily adaptable to most other Unixes):
+
+.. code-block:: bash
+
+	sudo apt install cmake cython git libgmp-dev python3-jinja2 python3-numpy python3-scipy python3-setuptools
+	
+	git clone https://github.com/symengine/symengine
+	cd symengine
+	cmake .
+	make
+	sudo make install
+	
+	pip3 install \
+		git+git://github.com/symengine/symengine.py \
+		git+git://github.com/neurophysik/jitcxde_common \
+		git+git://github.com/neurophysik/jitcode \
+		git+git://github.com/neurophysik/jitcdde \
+		git+git://github.com/neurophysik/jitcsde \
+		--no-dependencies --user
+
 Unix (Linux, MacOS, …)
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -64,7 +105,7 @@ This has two reasons or uses:
 	Optimisation still happens within chunks, but not across chunks.
 	We obtained better performances in these regards with Clang than with GCC.
 
-*   It allows a reasonable parallelisation using Open MP (see the next section). Note that `chunk_size` here is also used for regular loops and similar.
+*   It allows a reasonable parallelisation using OpenMP (see the next section). Note that `chunk_size` here is also used for regular loops and similar.
 
 If there is an obvious grouping of your :math:`f`, the group size suggests itself for `chunk_size`.
 For example, if you want to simulate the dynamics of three-dimensional oscillators coupled onto a 40×40 lattice and if the differential equations are grouped first by oscillator and then by lattice row, a chunk size of 120 suggests itself.
