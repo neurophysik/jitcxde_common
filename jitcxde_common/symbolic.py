@@ -20,7 +20,7 @@ def function_visitor(expression,function):
 	for arg in expression.args:
 		yield from function_visitor(arg,function)
 
-def collect_arguments(expression, function):
+def collect_arguments(expression,function):
 	"""
 	Parameters
 	----------
@@ -65,7 +65,8 @@ def ordered_subs(expression,substitutions):
 
 def replace_function(expression,function,new_function):
 	"""
-		To bypass SymPy issue #1356.
+		Replaces all instances of `function` within `expression` with `new_function`.
+		To bypass SymEngine issue #1356.
 	"""
 	if expression.is_Atom:
 		return expression

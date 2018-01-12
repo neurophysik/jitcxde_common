@@ -60,11 +60,17 @@ class jitcxde(object):
 		else:
 			self.jitced = None
 			self.compile_attempt = None
+		
+		# self.compile_attempt is:
+		#	• None if no compile attempt was made
+		#	• False if a compile attempt was made but not succesful
+		#	• True if a successful compile attempt was made
 	
 	def _handle_input(self,f_sym,n_basic=False):
 		"""
-		Converts f_sym to a generator function, if necessary.
-		Ensures that self.n (or self.n_basic) is the length of f_sym, if not predefined.
+		Converts f_sym to a generator function if necessary.
+		Ensures that self.n (or self.n_basic) is the length of f_sym if not predefined.
+		Ensures that entries are SymPy expressions.
 		"""
 		
 		n = self.n_basic if n_basic else self.n
@@ -87,9 +93,11 @@ class jitcxde(object):
 				yield sympify(entry)
 		
 		return new_f_sym
-
 	
 	def _tmpfile(self,filename=None):
+		"""
+			returns the path to a file in the tempory directory associated to this instance or the directory itself (if `filename` is None). Creates the directory if necessary.
+		"""
 		if self._tmpdir is None:
 			self._tmpdir = mkdtemp()
 		
@@ -123,6 +131,9 @@ class jitcxde(object):
 		return self._tmpfile(self._modulename + ".c")
 	
 	def _render_template(self,**kwargs):
+		"""
+		use Jinja2 to render a template for the module
+		"""
 		kwargs["module_name"] = self._modulename
 		folder = path.dirname( stack()[1][1] )
 		env = Environment(loader=FileSystemLoader(folder))
@@ -137,6 +148,23 @@ class jitcxde(object):
 			arguments = (),
 			omp = True,
 			):
+		"""
+			Writes expressions to code.
+			
+			Parameters
+			----------
+			expressions: iterator
+				expressions to be written
+			name: string
+				unique name of what is computed
+			chunk_size: integer
+				size of chunks. If smaller than 1, no chunking happens.
+			arguments: list of tuples
+				Each tuple contains the name, type, and size (optional, for arrays) of an argument needed by the code.
+				This is so the arguments can be passed to chunked functions.
+			omp: boolean
+				whether OMP pragmas should be included
+		"""
 		
 		with \
 				open( self._tmpfile(name+".c"            ), "w" ) as mainfile, \
@@ -178,14 +206,14 @@ class jitcxde(object):
 				self._modulename,
 				sources = [self.sourcefile],
 				include_dirs = [numpy.get_include()],
-				)
+			)
 		
 		script_args = [
 				"build_ext",
 				"--build-lib", self._tmpfile(),
 				"--build-temp", self._tmpfile(),
 				"--force",
-				]
+			]
 		
 		if not omp:
 			omp = ( [], [] )
@@ -200,7 +228,7 @@ class jitcxde(object):
 					return omp[0] + DEFAULT_COMPILE_ARGS
 			else:
 				return omp[0] + extra_compile_args
-
+		
 		def determine_link_args(is_msvc):
 			if extra_link_args is None:
 				if is_msvc:
@@ -222,11 +250,11 @@ class jitcxde(object):
 				build_ext.build_extensions(self)
 		
 		setup(
-			name = self._modulename,
-			ext_modules = [extension],
-			script_args = script_args,
-			verbose = verbose,
-			cmdclass = {'build_ext':build_ext_with_compiler_detection}
+				name = self._modulename,
+				ext_modules = [extension],
+				script_args = script_args,
+				verbose = verbose,
+				cmdclass = {'build_ext':build_ext_with_compiler_detection}
 			)
 		
 		self.jitced = find_and_load_module(self._modulename,self._tmpfile())

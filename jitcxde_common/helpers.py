@@ -28,7 +28,7 @@ def sympify_helpers(helpers):
 
 def filter_helpers(helpers,symbols):
 	"""
-	filters a list of helpers to contain only those listed in symbols and those needed for calculating them.
+	filters a list of helpers to contain only those listed in `symbols` and those needed for calculating them.
 	"""
 	needed = set(symbols) # convert and copy
 	filtered_rev = []
