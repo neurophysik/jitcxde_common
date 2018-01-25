@@ -14,10 +14,10 @@ Building from source
 
 **Note: This is currently the only way to get the most recent SymEngine-based version.**
 
-*	Install SymEngine from source following the instructions `here <https://github.com/symengine/symengine>`_.
+*	Install SymEngine from source following the instructions `here <https://github.com/symengine/symengine#building-from-source>`_.
 	Unless a release has been made recently, there is no packaged version that suffices (see `Symengine.py Issue #204 <https://github.com/symengine/symengine.py/issues/204>`_).
 
-*	Install the SymEngine Python bindings from source following the instructions `here <https://github.com/symengine/symengine.py>`_.
+*	Install the SymEngine Python bindings from source following the instructions `here <https://github.com/symengine/symengine.py#build-from-source>`_.
 
 *	Install readily available required Python packages, namely Jinja 2, NumPy, SciPy, and Setuptools.
 
