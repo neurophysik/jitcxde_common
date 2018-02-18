@@ -9,47 +9,6 @@ In the following, *JiTC*DE* refers to any of the aforementioned modules.
 Installation
 ------------
 
-Building from source
-^^^^^^^^^^^^^^^^^^^^
-
-**Note: This is currently the only way to get the most recent SymEngine-based version.**
-
-*	Install SymEngine from source following the instructions `here <https://github.com/symengine/symengine#building-from-source>`_.
-	Unless a release has been made recently, there is no packaged version that suffices (see `Symengine.py Issue #204 <https://github.com/symengine/symengine.py/issues/204>`_).
-
-*	Install the SymEngine Python bindings from source following the instructions `here <https://github.com/symengine/symengine.py#build-from-source>`_.
-
-*	Install readily available required Python packages, namely Jinja 2, NumPy, SciPy, and Setuptools.
-
-*	Install JiTC*DE Common and the desired packages from GitHub.
-	The easiest way to do this is probably:
-	
-	.. code-block:: bash
-	
-		pip3 install git+git://github.com/neurophysik/jitcode
-	
-	Replace `jitcode` with `jitcxde_common`, `jitcdde`, or `jitcsde` accordingly.
-
-Here is a summary of commands for Ubuntu (that should be easily adaptable to most other Unixes):
-
-.. code-block:: bash
-
-	sudo apt install cmake cython git libgmp-dev python3-jinja2 python3-numpy python3-scipy python3-setuptools
-	
-	git clone https://github.com/symengine/symengine
-	cd symengine
-	cmake .
-	make
-	sudo make install
-	
-	pip3 install \
-		git+git://github.com/symengine/symengine.py \
-		git+git://github.com/neurophysik/jitcxde_common \
-		git+git://github.com/neurophysik/jitcode \
-		git+git://github.com/neurophysik/jitcdde \
-		git+git://github.com/neurophysik/jitcsde \
-		--no-dependencies --user
-
 Unix (Linux, MacOS, …)
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -84,6 +43,45 @@ Windows (Anaconda)
 		pip install jitcode --user
 	
 	Replace `jitcode` with `jitcdde` or `jitcsde` if that’s what you want.
+
+Building from source
+^^^^^^^^^^^^^^^^^^^^
+Usually you do not need to do this, but it may be the only way if prepackaged SymEngine doesn’t work on your system.
+
+*	Install SymEngine from source following the instructions `here <https://github.com/symengine/symengine#building-from-source>`_.
+
+*	Install the SymEngine Python bindings from source following the instructions `here <https://github.com/symengine/symengine.py#build-from-source>`_.
+
+*	Install readily available required Python packages, namely Jinja 2, NumPy, SciPy, and Setuptools.
+
+*	Install JiTC*DE Common and the desired packages from GitHub.
+	The easiest way to do this is probably:
+	
+	.. code-block:: bash
+	
+		pip3 install git+git://github.com/neurophysik/jitcode
+	
+	Replace `jitcode` with `jitcxde_common`, `jitcdde`, or `jitcsde` accordingly.
+
+Here is a summary of commands for Ubuntu (that should be easily adaptable to most other Unixes):
+
+.. code-block:: bash
+
+	sudo apt install cmake cython git libgmp-dev python3-jinja2 python3-numpy python3-scipy python3-setuptools
+	
+	git clone https://github.com/symengine/symengine
+	cd symengine
+	cmake .
+	make
+	sudo make install
+	
+	pip3 install \
+		git+git://github.com/symengine/symengine.py \
+		git+git://github.com/neurophysik/jitcxde_common \
+		git+git://github.com/neurophysik/jitcode \
+		git+git://github.com/neurophysik/jitcdde \
+		git+git://github.com/neurophysik/jitcsde \
+		--no-dependencies --user
 
 .. _large_systems:
 
@@ -205,7 +203,7 @@ By using SymEngine instead of SymPy, code generation in JiTC*DE is up to nine hu
 
 Pratically, you can use both SymPy and SymEngine to provide the input to JiTC*DE, as they are compatible with each other.
 However, using SymPy may considerably slow down code generation.
-Also, some advanced features of SymPy may not translate to SymEngine, but so far the only one I can see making sense in a typical JiTC*DE application ar SymPy’s sums and those can be easily replaced by Python sums.
+Also, some advanced features of SymPy may not translate to SymEngine, but so far the only one I can see making sense in a typical JiTC*DE application are SymPy’s sums and those can be easily replaced by Python sums.
 
 Note that while SymEngine’s Python wrapper is sparsely documented, almost everything that is relevant to JiTC*DE behaves analogously to SymPy and the latter’s documentation serves as a documentation for SymEngine as well.
 For this reason, JiTC*DE’s documentation also often links to SymPy’s documentation when talking about SymEngine features.
