@@ -238,7 +238,6 @@ class jitcxde(object):
 			else:
 				return omp[1] + extra_link_args
 		
-		
 		class build_ext_with_compiler_detection(build_ext):
 			def build_extensions(self):
 				is_msvc = self.compiler.compiler_type=="msvc"
