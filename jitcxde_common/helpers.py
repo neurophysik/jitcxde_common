@@ -39,6 +39,26 @@ def filter_helpers(helpers,symbols):
 	
 	return list(reversed(filtered_rev))
 
+def find_dependent_helpers(helpers,dependency):
+	"""
+	Returns a list of helpers depending on `dependency` and their respective derivative (applying the chain rule).
+	"""
+	
+	dependent_helpers = []
+	
+	for helper in helpers:
+		derivative = sum(
+				(
+					helper[1].diff(other_helper[0]) * other_helper[1]
+					for other_helper in dependent_helpers
+				),
+				helper[1].diff(dependency)
+			)
+		if derivative != 0:
+			dependent_helpers.append( (helper[0], derivative) )
+	
+	return dependent_helpers
+
 def copy_helpers(helpers):
 	return [helper for helper in helpers]
 

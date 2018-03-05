@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from jitcxde_common.helpers import sort_helpers, filter_helpers, copy_helpers
+from jitcxde_common.helpers import sort_helpers, filter_helpers, copy_helpers, find_dependent_helpers
 import unittest
-from symengine import symbols
+from symengine import symbols, sin, cos, Integer
 from itertools import permutations
 
 p,q,r,s,u,v = symbols("p q r s u v")
@@ -38,6 +38,23 @@ class CopyTest(unittest.TestCase):
 		copy = copy_helpers(chain)
 		copy.append([u,v])
 		assert copy!=chain
+
+class FindDependentTest(unittest.TestCase):
+	def test_find_dependent_helpers(self):
+		helpers = [
+				( q, p           ),
+				( r, sin(q)      ),
+				( s, 3*p+r       ),
+				( u, Integer(42) ),
+			]
+		control = [
+				( q, 1        ),
+				( r, cos(q)   ),
+				( s, 3+cos(q) ),
+			]
+		dependent_helpers = find_dependent_helpers(helpers,p)
+		# This check is overly restrictive due to depending on the order and exact form of the result:
+		self.assertListEqual(dependent_helpers,control)
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)
