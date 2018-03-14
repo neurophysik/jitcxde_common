@@ -207,11 +207,16 @@ Also, some advanced features of SymPy may not translate to SymEngine, but so far
 Note that while SymEngine’s Python wrapper is sparsely documented, almost everything that is relevant to JiTC*DE behaves analogously to SymPy and the latter’s documentation serves as a documentation for SymEngine as well.
 For this reason, JiTC*DE’s documentation also often links to SymPy’s documentation when talking about SymEngine features.
 
-Common Mistakes
----------------
+Common Mistakes and Questions
+-----------------------------
 
 *	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymEngine variants.
 	For example, instead of `math.sin` or `numpy.sin`, you have to use `symengine.sin`.
+
+*	If you wish to use step functions to drive the system or similar, use a sharp sigmoidal instead.
+	SymEngine has not implemented SymPy’s `Piecewise` yet, but more importantly discontinuities can cause all sorts of problems with the integrators.
+
+*	If you get unexpected or cryptic errors, please run the respective class’s `check` function and also check that all input has the right format and functions have the right signature.
 
 *	If JiTC*DE’s code generation and compilation is too slow or bursts your memory, check:
 	
