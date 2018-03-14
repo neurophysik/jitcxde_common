@@ -2,7 +2,6 @@ Common Information for JiTCODE, JiTCDDE, and JiTCSDE
 ====================================================
 
 The following is some detailed information on aspects common to `JiTCODE`_, `JiTCDDE`_, and `JiTCSDE`_.
-As these are rather advanced topics, please read the respective documentation of the module you want to use first.
 
 In the following, *JiTC*DE* refers to any of the aforementioned modules.
 
