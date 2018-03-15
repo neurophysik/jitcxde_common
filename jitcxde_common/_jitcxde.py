@@ -3,7 +3,7 @@
 
 from tempfile import mkdtemp
 from os import path
-from inspect import stack, isgeneratorfunction
+from inspect import stack, isgeneratorfunction, isfunction
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import shutil
@@ -42,6 +42,11 @@ MSVC_COMPILE_ARGS = [
 
 #: A list with the default linker arguments for the Microsoft compiler.
 MSVC_LINK_ARGS = [ "/ignore:4197" ]
+
+# Decorator for checks
+def check(function):
+	function._is_check = True
+	return function
 
 class jitcxde(object):
 	"""
@@ -302,6 +307,48 @@ class jitcxde(object):
 			shutil.copy(sourcefile, destination)
 		
 		return destination
+	
+	def _fail_check(self,message):
+		self.failed_check = True
+		if self.fail_checks_fast:
+			raise ValueError(message)
+		else:
+			print(message)
+	
+	def check(self, fail_fast=True):
+		"""
+		Checks for the following mistakes:
+		
+		* negative arguments of `y`
+		* arguments of `y` that are higher than the system’s dimension `n`
+		* unused variables
+		
+		For large systems, this may take some time (which is why it is not run by default).
+		
+		Parameters
+		----------
+		fail_fast : boolean
+			whether to abort on the first failure. If false, an error is raised only after all problems are printed.
+		"""
+		self.failed_check = False
+		self.fail_checks_fast = fail_fast
+		
+		# execute all methods decorated with check:
+		visited = set()
+		for cls in [self.__class__] + self.__class__.mro():
+			for name,member in cls.__dict__.items():
+				if (
+						    name not in visited
+						and not isinstance(member,property)
+						and isfunction(member)
+						and hasattr(member,"_is_check")
+						and member._is_check
+					):
+						member(self)
+				visited.add(name)
+		
+		if self.failed_check:
+			raise ValueError("Check failed.")
 	
 	def __del__(self):
 		try:

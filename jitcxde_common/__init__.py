@@ -2,7 +2,7 @@ from sys import version_info
 if version_info < (3,3):
 	raise NotImplementedError("Python versions below 3.3 are not supported anymore (or never were). Please upgrade to a newer Python version.")
 
-from ._jitcxde import jitcxde, DEFAULT_COMPILE_ARGS, DEFAULT_LINK_ARGS, MSVC_COMPILE_ARGS, MSVC_LINK_ARGS
+from ._jitcxde import jitcxde, check, DEFAULT_COMPILE_ARGS, DEFAULT_LINK_ARGS, MSVC_COMPILE_ARGS, MSVC_LINK_ARGS
 
 try:
 	from .version import version as __version__
