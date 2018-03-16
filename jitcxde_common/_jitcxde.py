@@ -15,6 +15,7 @@ import numpy
 from jinja2 import Environment, FileSystemLoader
 from symengine import sympify
 
+from jitcxde_common.check import CheckEnvironment
 from jitcxde_common.modules import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
 from jitcxde_common.strings import count_up
 from jitcxde_common.code import write_in_chunks, codelines
@@ -48,7 +49,7 @@ def checker(function):
 	function._is_checker = True
 	return function
 
-class jitcxde(object):
+class jitcxde(CheckEnvironment):
 	"""
 	A base class containing elementary, common functionalities of all JiTC*DE projects – mostly file and input handling. It is pretty dysfunctional on its own and only made to be inherited from.
 	"""
@@ -307,47 +308,6 @@ class jitcxde(object):
 			shutil.copy(sourcefile, destination)
 		
 		return destination
-	
-	def _check_assert(self,condition,message):
-		if not condition:
-			self.failed_check = True
-			if self.fail_checks_fast:
-				raise ValueError(message)
-			else:
-				print(message)
-	
-	def check(self, fail_fast=True):
-		"""
-		Performs a series of checks that may not be feasible at runtime (usually due to their length). Whenever you run into an error that you cannot make sense of, try running this. It checks for the following mistakes:
-		
-		* negative arguments of `y`
-		* arguments of `y` that are higher than the system’s dimension `n`
-		* unused variables
-		
-		Parameters
-		----------
-		fail_fast : boolean
-			whether to abort on the first failure. If false, an error is raised only after all problems are printed.
-		"""
-		self.failed_check = False
-		self.fail_checks_fast = fail_fast
-		
-		# execute all methods decorated with checker:
-		visited = set()
-		for cls in [self.__class__] + self.__class__.mro():
-			for name,member in cls.__dict__.items():
-				if (
-						    name not in visited
-						and not isinstance(member,property)
-						and isfunction(member)
-						and hasattr(member,"_is_checker")
-						and member._is_checker
-					):
-						member(self)
-				visited.add(name)
-		
-		if self.failed_check:
-			raise ValueError("Check failed.")
 	
 	def __del__(self):
 		try:

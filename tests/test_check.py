@@ -1,7 +1,7 @@
 import unittest
-from jitcxde_common import jitcxde, checker
+from jitcxde_common.check import CheckEnvironment, checker
 
-class SomeChecks(jitcxde):
+class SomeChecks(CheckEnvironment):
 	def __init__(self,fail=True):
 		self.invoked = []
 		self.fail = fail
