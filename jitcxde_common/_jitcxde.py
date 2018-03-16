@@ -318,13 +318,11 @@ class jitcxde(object):
 	
 	def check(self, fail_fast=True):
 		"""
-		Checks for the following mistakes:
+		Performs a series of checks that may not be feasible at runtime (usually due to their length). Whenever you run into an error that you cannot make sense of, try running this. It checks for the following mistakes:
 		
 		* negative arguments of `y`
 		* arguments of `y` that are higher than the system’s dimension `n`
 		* unused variables
-		
-		For large systems, this may take some time (which is why it is not run by default).
 		
 		Parameters
 		----------
