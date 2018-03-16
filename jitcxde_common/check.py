@@ -1,12 +1,19 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+# This creates an infrastructure for checks for JiTC*DE objects that works as follows:
+# • Each check is registered as such by being decorated with `@checker`.
+# • Each class that needs checks inherits from CheckEnvironment.
+# • All checks are run with the method check.
 
-from inspect import isfunction
+# This class exist just to mark functions
+class CheckerWrapper(object):
+	def __init__(self,function):
+		self.function = function
+	
+	def __call__(self,*args):
+		self.function(*args)
 
 # Decorator for checks
 def checker(function):
-	function._is_checker = True
-	return function
+	return CheckerWrapper(function)
 
 class CheckEnvironment(object):
 	def _check_assert(self,condition,message):
@@ -38,14 +45,8 @@ class CheckEnvironment(object):
 		visited = set()
 		for cls in [self.__class__] + self.__class__.mro():
 			for name,member in cls.__dict__.items():
-				if (
-						    name not in visited
-						and not isinstance(member,property)
-						and isfunction(member)
-						and hasattr(member,"_is_checker")
-						and member._is_checker
-					):
-						member(self)
+				if name not in visited and isinstance(member,CheckerWrapper):
+					member(self)
 				visited.add(name)
 		
 		if self.failed_check:
