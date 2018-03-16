@@ -13,8 +13,7 @@ class SomeChecks(jitcxde):
 	@check
 	def B(self):
 		self.invoked.append(2)
-		if self.fail:
-			self._fail_check("Check A failed.")
+		self._check_assert( not self.fail, "Check A failed." )
 	
 	@check
 	def C(self):
@@ -23,8 +22,7 @@ class SomeChecks(jitcxde):
 	@check
 	def D(self):
 		self.invoked.append(4)
-		if self.fail:
-			self._fail_check("Check D failed.")
+		self._check_assert( not self.fail, "Check D failed." )
 
 	def E(self):
 		raise AssertionError("This method should not be run")
@@ -40,8 +38,7 @@ class DifferentChecks(SomeChecks):
 	@check
 	def C(self):
 		self.invoked.append(6)
-		if self.fail:
-			self._fail_check("Check C failed.")
+		self._check_assert( not self.fail, "Check C failed." )
 
 class TestChecks(unittest.TestCase):
 	def test_default(self):
@@ -54,12 +51,12 @@ class TestChecks(unittest.TestCase):
 		X = SomeChecks(fail=True)
 		with self.assertRaises(ValueError):
 			X.check(fail_fast=False)
-		self.assertListEqual(sorted(X.invoked),[1,2,3,4])
+		self.assertListEqual( sorted(X.invoked), [1,2,3,4] )
 	
 	def test_success(self):
 		X = SomeChecks(fail=False)
 		X.check()
-		self.assertListEqual(sorted(X.invoked),[1,2,3,4])
+		self.assertListEqual( sorted(X.invoked), [1,2,3,4] )
 
 class TestInheritance(unittest.TestCase):
 	def test_default(self):
@@ -73,12 +70,12 @@ class TestInheritance(unittest.TestCase):
 		X = DifferentChecks(fail=True)
 		with self.assertRaises(ValueError):
 			X.check(fail_fast=False)
-		self.assertListEqual(sorted(X.invoked),[4,5,6])
+		self.assertListEqual( sorted(X.invoked), [4,5,6] )
 	
 	def test_success(self):
 		X = DifferentChecks(fail=False)
 		X.check()
-		self.assertListEqual(sorted(X.invoked),[4,5,6])
+		self.assertListEqual( sorted(X.invoked), [4,5,6] )
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)

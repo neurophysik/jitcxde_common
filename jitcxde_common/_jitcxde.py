@@ -308,12 +308,13 @@ class jitcxde(object):
 		
 		return destination
 	
-	def _fail_check(self,message):
-		self.failed_check = True
-		if self.fail_checks_fast:
-			raise ValueError(message)
-		else:
-			print(message)
+	def _check_assert(self,condition,message):
+		if not condition:
+			self.failed_check = True
+			if self.fail_checks_fast:
+				raise ValueError(message)
+			else:
+				print(message)
 	
 	def check(self, fail_fast=True):
 		"""
