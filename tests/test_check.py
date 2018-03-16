@@ -1,25 +1,25 @@
 import unittest
-from jitcxde_common import jitcxde, check
+from jitcxde_common import jitcxde, checker
 
 class SomeChecks(jitcxde):
 	def __init__(self,fail=True):
 		self.invoked = []
 		self.fail = fail
 	
-	@check
+	@checker
 	def A(self):
 		self.invoked.append(1)
 	
-	@check
+	@checker
 	def B(self):
 		self.invoked.append(2)
 		self._check_assert( not self.fail, "Check A failed." )
 	
-	@check
+	@checker
 	def C(self):
 		self.invoked.append(3)
 	
-	@check
+	@checker
 	def D(self):
 		self.invoked.append(4)
 		self._check_assert( not self.fail, "Check D failed." )
@@ -31,11 +31,11 @@ class DifferentChecks(SomeChecks):
 	def A(self):
 		raise AssertionError("This method should not be run")
 	
-	@check
+	@checker
 	def B(self):
 		self.invoked.append(5)
 	
-	@check
+	@checker
 	def C(self):
 		self.invoked.append(6)
 		self._check_assert( not self.fail, "Check C failed." )
