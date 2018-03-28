@@ -213,8 +213,10 @@ Common Mistakes and Questions
 *	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymEngine variants.
 	For example, instead of `math.sin` or `numpy.sin`, you have to use `symengine.sin`.
 
-*	If you wish to use step functions to drive the system or similar, use a sharp sigmoidal instead.
+*	If you wish to use step functions to drive the system or similar, the best alternative is usually to use a sharp sigmoidal instead.
 	SymEngine has not implemented SymPy’s `Piecewise` yet, but more importantly discontinuities can cause all sorts of problems with the integrators.
+	If your step-wise behaviour depends on time (e.g., an external pulse that is limited in time), you can also integrate up to the pount of the step, change `f` or a control parameter, and continue.
+	Note that for DDEs this may introduce a discontinuity that needs to be dealt with like an initial discontinuity.
 
 *	If you get unexpected or cryptic errors, please run the respective class’s `check` function and also check that all input has the right format and functions have the right signature.
 
