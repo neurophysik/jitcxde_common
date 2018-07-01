@@ -158,7 +158,7 @@ The only reason why you may want to change the module name is if you want to sav
 To do this, use the `modulename` argument of the `compile_C` command.
 If this argument is `None` or empty, the filename will be chosen by JiTC*DE based on previously used filenames or default to `jitced.so`.
 
-Note that it is not possible to re-use a modulename for a given instance of Python (due to the limitations of Python’s import machinery).
+Note that it is not possible to re-use a module name for a given instance of Python (due to the limitations of Python’s import machinery).
 
 Compiler and Linker Arguments
 -----------------------------
@@ -215,7 +215,7 @@ Common Mistakes and Questions
 
 *	If you wish to use step functions to drive the system or similar, the best alternative is usually to use a sharp sigmoidal instead.
 	SymEngine has not implemented SymPy’s `Piecewise` yet, but more importantly discontinuities can cause all sorts of problems with the integrators.
-	If your step-wise behaviour depends on time (e.g., an external pulse that is limited in time), you can also integrate up to the pount of the step, change `f` or a control parameter, and continue.
+	If your step-wise behaviour depends on time (e.g., an external pulse that is limited in time), you can also integrate up to the point of the step, change `f` or a control parameter, and continue.
 	Note that for DDEs this may introduce a discontinuity that needs to be dealt with like an initial discontinuity.
 
 *	If you get unexpected or cryptic errors, please run the respective class’s `check` function and also check that all input has the right format and functions have the right signature.
