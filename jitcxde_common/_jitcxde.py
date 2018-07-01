@@ -22,24 +22,24 @@ from jitcxde_common.code import write_in_chunks, codelines
 
 #: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymEngine uses the `pow` function for small integer powers (cf. `SymPy Issue 8997`_).
 DEFAULT_COMPILE_ARGS = [
-			"-std=c11",
-			"-Ofast",
-			"-g0",
-			"-march=native",
-			"-mtune=native",
-			"-Wno-unknown-pragmas",
-			]
+		"-std=c11",
+		"-Ofast",
+		"-g0",
+		"-march=native",
+		"-mtune=native",
+		"-Wno-unknown-pragmas",
+	]
 
 #: A list with the default linker arguments.
 DEFAULT_LINK_ARGS = [ "-lm" ]
 
 #: A list with the default compile arguments for the Microsoft compiler. I could not find what level of optimisation is needed to address the problem of SymEngine using the `pow` function for small integer powers (`SymPy Issue 8997`_).
 MSVC_COMPILE_ARGS = [
-			"/Ox",
-			"/wd4068",
-			"/wd4146",
-			"/wd4018"
-			]
+		"/Ox",
+		"/wd4068",
+		"/wd4146",
+		"/wd4018"
+	]
 
 #: A list with the default linker arguments for the Microsoft compiler.
 MSVC_LINK_ARGS = [ "/ignore:4197" ]
