@@ -3,10 +3,13 @@
 # • Each class that needs checks inherits from CheckEnvironment.
 # • All checks are run with the method check.
 
+from functools import update_wrapper
+
 # This class exist just to mark functions
 class checker(object):
 	def __init__(self,function):
 		self.function = function
+		update_wrapper(self,function)
 	
 	def __call__(self,*args):
 		self.function(*args)
