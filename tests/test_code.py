@@ -6,6 +6,7 @@ import platform
 import shutil
 from tempfile import mkdtemp
 import unittest
+import pickle
 
 import symengine
 import numpy
@@ -140,6 +141,11 @@ class test_errors(unittest.TestCase):
 		faulty_f = [y(x).diff(x)]
 		with self.assertRaises(NotImplementedError):
 			jitcxde_tester(faulty_f)
+	
+	def test_pickle_error(self):
+		tester = jitcxde_tester(f)
+		with self.assertRaises(pickle.PickleError):
+			pickle.dumps(tester)
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)

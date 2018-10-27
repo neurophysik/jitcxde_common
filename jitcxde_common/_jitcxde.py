@@ -10,6 +10,7 @@ import shutil
 from sys import modules
 from warnings import warn
 from traceback import format_exc
+from pickle import PickleError
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
@@ -314,4 +315,8 @@ class jitcxde(CheckEnvironment):
 			shutil.rmtree(self._tmpdir)
 		except (OSError, AttributeError, TypeError):
 			pass
+	
+	def __getstate__(self):
+		raise PickleError("There is no pickling support for JiTC*DE objects and there likely never will be. Take a look at save_compiled instead.")
+
 
