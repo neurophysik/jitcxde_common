@@ -35,11 +35,12 @@ def f_generator():
 	for entry in f:
 		yield entry
 
+f_dictionary = { y(i):entry for i,entry in enumerate(f) }
 
 class jitcxde_tester(jitcxde):
 	def __init__(self,f_sym=(),n=None,module_location=None,chunk_size=100,omp=False):
 		jitcxde.__init__(self,n,False,module_location)
-		f_sym_wc = self._handle_input(f_sym)
+		f_sym_wc = self._handle_input(f_sym,y)
 		set_dy = symengine.Function("set_dy")
 		self.omp = omp
 		
@@ -135,6 +136,11 @@ class basic_test_with_generator_function(basic_test):
 	def setUpClass(self):
 		self.argdict = {"f_sym":f_generator, "n":len(f)}
 
+class basic_test_with_dictionary(basic_test):
+	@classmethod
+	def setUpClass(self):
+		self.argdict = {"f_sym":f_dictionary}
+
 class test_errors(unittest.TestCase):
 	def test_not_supported_error(self):
 		x = symengine.Symbol("x")
@@ -146,6 +152,17 @@ class test_errors(unittest.TestCase):
 		tester = jitcxde_tester(f)
 		with self.assertRaises(pickle.PickleError):
 			pickle.dumps(tester)
+	
+	def test_dict_missing_equation(self):
+		faulty_f = { y(0):1, y(2):1 }
+		with self.assertRaises(ValueError):
+			jitcxde_tester(faulty_f)
+	
+	def test_dict_spurious_equation(self):
+		x = symengine.Symbol("x")
+		faulty_f = { y(0):1, y(1):1, x:1 }
+		with self.assertRaises(ValueError):
+			jitcxde_tester(faulty_f)
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)

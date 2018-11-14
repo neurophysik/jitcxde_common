@@ -73,11 +73,12 @@ class jitcxde(CheckEnvironment):
 		#	• False if a compile attempt was made but not succesful
 		#	• True if a successful compile attempt was made
 	
-	def _handle_input(self,f_sym,n_basic=False):
+	def _handle_input(self,f_sym,y,n_basic=False):
 		"""
 		Converts f_sym to a generator function if necessary.
 		Ensures that self.n (or self.n_basic) is the length of f_sym if not predefined.
 		Ensures that entries are SymPy expressions.
+		Ensures that f_sym has the proper set of keys if a dictionary.
 		"""
 		
 		n = self.n_basic if n_basic else self.n
@@ -94,10 +95,17 @@ class jitcxde(CheckEnvironment):
 		if n_basic: self.n_basic = length
 		else:       self.n       = length
 		
-		def new_f_sym():
-			gen = f_sym() if isgeneratorfunction(f_sym) else f_sym
-			for entry in gen:
-				yield sympify(entry)
+		if isinstance(f_sym,dict):
+			if not set(f_sym.keys()) == {y(i) for i in range(length)}:
+				raise ValueError("If f_sym is a dictionary, its keys must be y(0), y(1), …, y(n) where n is the number of entries.")
+			def new_f_sym():
+				for i in range(length):
+					yield f_sym[y(i)]
+		else:
+			def new_f_sym():
+				gen = f_sym() if isgeneratorfunction(f_sym) else f_sym
+				for entry in gen:
+					yield sympify(entry)
 		
 		return new_f_sym
 	
