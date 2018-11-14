@@ -135,6 +135,8 @@ It is therefore **only worthwhile if both**:
 Choosing the Compiler
 ---------------------
 
+You can find out which compiler is used by explicitly calling `I.compile_C(verbose=True)`, where `I` is your JiTC*DE object.
+
 Linux (and other Unixes, like MacOS)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Setuptools uses your operating system’s `CC` flag to choose the compiler.
