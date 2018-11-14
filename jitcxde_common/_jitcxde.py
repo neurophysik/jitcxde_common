@@ -73,7 +73,7 @@ class jitcxde(CheckEnvironment):
 		#	• False if a compile attempt was made but not succesful
 		#	• True if a successful compile attempt was made
 	
-	def _handle_input(self,f_sym,y,n_basic=False):
+	def _handle_input(self,f_sym,n_basic=False):
 		"""
 		Converts f_sym to a generator function if necessary.
 		Ensures that self.n (or self.n_basic) is the length of f_sym if not predefined.
@@ -96,11 +96,11 @@ class jitcxde(CheckEnvironment):
 		else:       self.n       = length
 		
 		if isinstance(f_sym,dict):
-			if not set(f_sym.keys()) == {y(i) for i in range(length)}:
+			if not set(f_sym.keys()) == {self.dynvar(i) for i in range(length)}:
 				raise ValueError("If f_sym is a dictionary, its keys must be y(0), y(1), …, y(n) where n is the number of entries.")
 			def new_f_sym():
 				for i in range(length):
-					yield f_sym[y(i)]
+					yield f_sym[self.dynvar(i)]
 		else:
 			def new_f_sym():
 				gen = f_sym() if isgeneratorfunction(f_sym) else f_sym
@@ -157,11 +157,11 @@ class jitcxde(CheckEnvironment):
 			codefile.write(template.render(kwargs))
 	
 	def render_and_write_code(self,
-			expressions,
-			name,
-			chunk_size = 100,
-			arguments = (),
-			omp = True,
+				expressions,
+				name,
+				chunk_size = 100,
+				arguments = (),
+				omp = True,
 			):
 		"""
 			Writes expressions to code.

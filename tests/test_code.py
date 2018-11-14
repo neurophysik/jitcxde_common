@@ -38,9 +38,11 @@ def f_generator():
 f_dictionary = { y(i):entry for i,entry in enumerate(f) }
 
 class jitcxde_tester(jitcxde):
+	dynvar = y
+	
 	def __init__(self,f_sym=(),n=None,module_location=None,chunk_size=100,omp=False):
 		jitcxde.__init__(self,n,False,module_location)
-		f_sym_wc = self._handle_input(f_sym,y)
+		f_sym_wc = self._handle_input(f_sym)
 		set_dy = symengine.Function("set_dy")
 		self.omp = omp
 		
