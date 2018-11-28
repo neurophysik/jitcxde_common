@@ -75,7 +75,7 @@ class jitcxde(CheckEnvironment):
 	
 	def _check_dynvar_dict(self,dictionary,name,length):
 		if not set(dictionary.keys()) == {self.dynvar(i) for i in range(length)}:
-			raise ValueError(f"If {name} is a dictionary, its keys must be y(0), y(1), …, y(n) where n is the number of entries.")
+			raise ValueError("If %s is a dictionary, its keys must be y(0), y(1), …, y(n) where n is the number of entries." % name)
 	
 	def _generator_func_from_dynvar_dict(self,dictionary,name,length):
 		"""
