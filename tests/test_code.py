@@ -165,6 +165,21 @@ class test_errors(unittest.TestCase):
 		faulty_f = { y(0):1, y(1):1, x:1 }
 		with self.assertRaises(ValueError):
 			jitcxde_tester(faulty_f)
+	
+	def test_dict_tester_missing_equation(self):
+		tester = jitcxde_tester(f)
+		faulty_dict = { y(0):1, y(2):1 }
+		for i in range(10):
+			with self.assertRaises(ValueError):
+				tester._check_dynvar_dict(faulty_dict,"",i)
+	
+	def test_dict_spurious_equation(self):
+		tester = jitcxde_tester(f)
+		x = symengine.Symbol("x")
+		faulty_dict = { y(0):1, y(1):1, x:1 }
+		for i in range(10):
+			with self.assertRaises(ValueError):
+				tester._check_dynvar_dict(faulty_dict,"",i)
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)

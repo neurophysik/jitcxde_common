@@ -73,6 +73,42 @@ class jitcxde(CheckEnvironment):
 		#	• False if a compile attempt was made but not succesful
 		#	• True if a successful compile attempt was made
 	
+	def _check_dynvar_dict(self,dictionary,name,length):
+		if not set(dictionary.keys()) == {self.dynvar(i) for i in range(length)}:
+			raise ValueError(f"If {name} is a dictionary, its keys must be y(0), y(1), …, y(n) where n is the number of entries.")
+	
+	def _generator_func_from_dynvar_dict(self,dictionary,name,length):
+		"""
+		returns a generator function that yields:
+			dictionary[dynvar(0)], dictionary[dynvar(1)], …, dictionary[dynvar(length)]
+		
+		Parameters
+		----------
+		name: string
+			the name of the dictionary for error messages
+		"""
+		self._check_dynvar_dict(dictionary,name,length)
+		def generator_func():
+			for i in range(length):
+				yield dictionary[self.dynvar(i)]
+		return generator_func
+	
+	def _list_from_dynvar_dict(self,dictionary,name,length):
+		"""
+		returns the list
+			[ dictionary[dynvar(0)], dictionary[dynvar(1)], …, dictionary[dynvar(length)] ]
+		
+		Parameters
+		----------
+		name: string
+			the name of the dictionary for error messages
+		"""
+		self._check_dynvar_dict(dictionary,name,length)
+		return [
+				dictionary[self.dynvar(i)]
+				for i in range(length)
+			]
+	
 	def _handle_input(self,f_sym,n_basic=False):
 		"""
 		Converts f_sym to a generator function if necessary.
@@ -96,11 +132,7 @@ class jitcxde(CheckEnvironment):
 		else:       self.n       = length
 		
 		if isinstance(f_sym,dict):
-			if not set(f_sym.keys()) == {self.dynvar(i) for i in range(length)}:
-				raise ValueError("If f_sym is a dictionary, its keys must be y(0), y(1), …, y(n) where n is the number of entries.")
-			def new_f_sym():
-				for i in range(length):
-					yield f_sym[self.dynvar(i)]
+			new_f_sym = self._generator_func_from_dynvar_dict(f_sym,"f_sym",length)
 		else:
 			def new_f_sym():
 				gen = f_sym() if isgeneratorfunction(f_sym) else f_sym
