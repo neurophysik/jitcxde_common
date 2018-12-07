@@ -32,7 +32,7 @@ Windows (Anaconda)
 *	Install Anaconda.
 
 *	Install a C compiler.
-	The only one that Setuptools uses without a major struggle is from `Microsoft Build Tools for Visual Studio <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_
+	The only one that Setuptools uses without a major struggle is from `Microsoft Build Tools for Visual Studio <https://docs.microsoft.com/visualstudio/install>`_
 	For more details and everything else, see `this site <https://wiki.python.org/moin/WindowsCompilers>`_.
 
 *	Open the Anaconda Prompt and run:
