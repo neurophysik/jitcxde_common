@@ -82,6 +82,15 @@ Here is a summary of commands for Ubuntu (that should be easily adaptable to mos
 		git+git://github.com/neurophysik/jitcsde \
 		--no-dependencies --user
 
+Testing the Installation
+^^^^^^^^^^^^^^^^^^^^^^^^
+Each module provides a utility function that runs a short basic test of the installation, in particular whether a compiler is present and can be interfaced. For example, you can call it as follows:
+
+.. code-block:: python
+
+	import jitcode
+	jitcode.test()
+
 .. _large_systems:
 
 Networks or other very large differential equations
