@@ -24,7 +24,7 @@ def sort_helpers(helpers):
 	return helpers
 
 def sympify_helpers(helpers):
-	return [(helper[0], sympify(helper[1])) for helper in helpers]
+	return [(sympify(helper[0]), sympify(helper[1])) for helper in helpers]
 
 def filter_helpers(helpers,symbols):
 	"""
