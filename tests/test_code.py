@@ -180,6 +180,10 @@ class test_errors(unittest.TestCase):
 		for i in range(10):
 			with self.assertRaises(ValueError):
 				tester._check_dynvar_dict(faulty_dict,"",i)
+	
+	def test_set(self):
+		with self.assertRaises(ValueError):
+			jitcxde_tester(set(f))
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)

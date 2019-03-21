@@ -133,6 +133,8 @@ class jitcxde(CheckEnvironment):
 		
 		if isinstance(f_sym,dict):
 			new_f_sym = self._generator_func_from_dynvar_dict(f_sym,"f_sym",length)
+		elif isinstance(f_sym,set):
+			raise ValueError("f_sym is a set, which has no defined order. Use a list or tuple instead.")
 		else:
 			def new_f_sym():
 				gen = f_sym() if isgeneratorfunction(f_sym) else f_sym
