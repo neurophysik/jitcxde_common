@@ -236,7 +236,7 @@ class jitcxde(CheckEnvironment):
 		self.report("Generating, compiling, and loading C code.")
 		try:
 			self.compile_C()
-		except:
+		except Exception:
 			warn(format_exc())
 			line = "\n"+60*"="+"\n"
 			warn(line + "READ ME FIRST" + line + "Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call generate_lambdas to explicitly do this and bypass the compile attempt and error messages. Otherwise, you want to take care of fixing the above errors." + 2*line)
