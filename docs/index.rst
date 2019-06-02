@@ -214,6 +214,12 @@ By using SymEngine instead of SymPy, code generation in JiTC*DE is up to nine hu
 Pratically, you can use both SymPy and SymEngine to provide the input to JiTC*DE, as they are compatible with each other.
 However, using SymPy may considerably slow down code generation.
 Also, some advanced features of SymPy may not translate to SymEngine, but so far the only one I can see making sense in a typical JiTC*DE application are SymPy’s sums and those can be easily replaced by Python sums.
+If you want to precprocess JiTC*DE’s in some way that only SymPy can handle, there is a `sympy_symbols` submodule, which provides the SymPy symbols, which work the same as what `jitc*de` provides directly, except for speed. Here is an example for imports that make use of this:
+
+	.. code-block:: Python
+	
+		from jitcode import jitcode
+		from jitcode.sympy_symbols import t,y
 
 Note that while SymEngine’s Python wrapper is sparsely documented, almost everything that is relevant to JiTC*DE behaves analogously to SymPy and the latter’s documentation serves as a documentation for SymEngine as well.
 For this reason, JiTC*DE’s documentation also often links to SymPy’s documentation when talking about SymEngine features.
