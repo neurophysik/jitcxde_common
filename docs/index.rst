@@ -211,10 +211,11 @@ SymEngine is not yet ready for this, but it already has everything needed for Ji
 Also SymEngine internally resorts to SymPy for some features like simplification.
 By using SymEngine instead of SymPy, code generation in JiTC*DE is up to nine hundred times faster.
 
-Pratically, you can use both SymPy and SymEngine to provide the input to JiTC*DE, as they are compatible with each other.
+Practically, you can use both SymPy and SymEngine to provide the input to JiTC*DE, as they are compatible with each other.
 However, using SymPy may considerably slow down code generation.
 Also, some advanced features of SymPy may not translate to SymEngine, but so far the only one I can see making sense in a typical JiTC*DE application are SymPy’s sums and those can be easily replaced by Python sums.
-If you want to precprocess JiTC*DE’s in some way that only SymPy can handle, there is a `sympy_symbols` submodule, which provides the SymPy symbols, which work the same as what `jitc*de` provides directly, except for speed. Here is an example for imports that make use of this:
+If you want to precprocess JiTC*DE’s input in some way that only SymPy can handle, the `sympy_symbols` submodule provides SymPy symbols that work the same as what `jitc*de` provides directly, except for speed.
+Here is an example for imports that make use of this:
 
 	.. code-block:: Python
 	
@@ -230,7 +231,7 @@ Common Mistakes and Questions
 *	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymEngine variants.
 	For example, instead of `math.sin` or `numpy.sin`, you have to use `symengine.sin`.
 
-*	If you wish to use step functions to drive the system or similar, the best alternative is usually to use a sharp sigmoidal instead.
+*	If you wish to use step functions to drive the system or similar, the best alternative is usually to use a sharp sigmoid instead.
 	SymEngine has not implemented SymPy’s `Piecewise` yet, but more importantly discontinuities can cause all sorts of problems with the integrators.
 	If your step-wise behaviour depends on time (e.g., an external pulse that is limited in time), you can also integrate up to the point of the step, change `f` or a control parameter, and continue.
 	Note that for DDEs this may introduce a discontinuity that needs to be dealt with like an initial discontinuity.
@@ -242,6 +243,7 @@ Common Mistakes and Questions
 	* Did you deactivate simplifications and common-subexpression eliminations?
 	* Did you use a generator?
 	* Did you use chunking?
+	* Does disabling simplification or common-subexpression elimination (for all applicable processing steps) help?
 	* Did you use SymEngine symbols and functions instead of SymPy ones?
 	* Consider using Clang as a compiler.
 
