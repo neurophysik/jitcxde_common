@@ -226,16 +226,29 @@ Here is an example for imports that make use of this:
 Note that while SymEngine’s Python wrapper is sparsely documented, almost everything that is relevant to JiTC*DE behaves analogously to SymPy and the latter’s documentation serves as a documentation for SymEngine as well.
 For this reason, JiTC*DE’s documentation also often links to SymPy’s documentation when talking about SymEngine features.
 
+Conditionals
+------------
+
+Many dynamics contain a step function, Heaviside function, conditional, or whatever you like to call it.
+In the vast majority of cases you cannot naïvely implement this, because discontinuities can lead to all sorts of problems with the integrators.
+Most importantly, error estimation and step-size adaption requires a continuous derivative.
+Moreover, any Python conditionals will be evaluated during the code generation and not at runtime, which not what you want in this case.
+
+There are two general ways to solve this:
+
+*	If your step-wise behaviour depends on time (e.g., an external pulse that is limited in time), integrate up to the point of the step, change `f` or a control parameter, and continue.
+	Note that for DDEs this may introduce a discontinuity that needs to be dealt with like an initial discontinuity.
+
+*	Use a sharp sigmoid instead of the step function.
+	`jitcxde_common` provides a service function `conditional` which can be used for this purpose and is documented below.
+
+.. autofunction:: symbolic.conditional
+
 Common Mistakes and Questions
 -----------------------------
 
 *	If you want to use mathematical functions like `sin`, `exp` or `sqrt` you have to use the SymEngine variants.
 	For example, instead of `math.sin` or `numpy.sin`, you have to use `symengine.sin`.
-
-*	If you wish to use step functions to drive the system or similar, the best alternative is usually to use a sharp sigmoid instead.
-	SymEngine has not implemented SymPy’s `Piecewise` yet, but more importantly discontinuities can cause all sorts of problems with the integrators.
-	If your step-wise behaviour depends on time (e.g., an external pulse that is limited in time), you can also integrate up to the point of the step, change `f` or a control parameter, and continue.
-	Note that for DDEs this may introduce a discontinuity that needs to be dealt with like an initial discontinuity.
 
 *	If you get unexpected or cryptic errors, please run the respective class’s `check` function and also check that all input has the right format and functions have the right signature.
 

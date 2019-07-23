@@ -8,7 +8,7 @@ from setuptools_scm import get_version
 
 MOCK_MODULES = [
 	'numpy', 'numpy.testing', 'numpy.random',
-	'symengine', 'symengine.printing',
+	'symengine', 'symengine.printing', 'symengine.lib.symengine_wrapper',
 	'.'
 ]
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
