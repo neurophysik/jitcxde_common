@@ -8,7 +8,7 @@ a = Symbol("a")
 
 class TestCollectArguments(unittest.TestCase):
 	def test_complex_expression(self):
-		expression = 3**f(42) + 23 - f(43,44) + f(45+a)*sin( g(f(46,47,48)+17) - g(4) )
+		expression = 3**f(42) + 23 - f(43,44) + f(45+a)*sin( g(f(46,47,48)+17) - g(4) ) + sin(f(42))
 		
 		self.assertEqual(
 				collect_arguments(expression,f),
@@ -20,11 +20,11 @@ class TestCollectArguments(unittest.TestCase):
 				}
 			)
 		
-		self.assertEqual(count_calls(expression,f),4)
+		self.assertEqual(count_calls(expression,f),5)
 		self.assertTrue(has_function(expression,f))
 		self.assertEqual(
 				replace_function(expression,f,g),
-				3**g(42) + 23 - g(43,44) + g(45+a)*sin( g(g(46,47,48)+17) - g(4) )
+				3**g(42) + 23 - g(43,44) + g(45+a)*sin( g(g(46,47,48)+17) - g(4) + sin(g(42)) )
 			)
 	
 	def test_function_within_function(self):
