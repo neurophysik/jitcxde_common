@@ -10,7 +10,7 @@ class RandomDirectionTest(unittest.TestCase):
 	def test_random_direction(self):
 		d = 10
 		n = 100000
-		n_vectors = np.vstack(random_direction(d) for i in range(n))
+		n_vectors = np.vstack([random_direction(d) for i in range(n)])
 		average = np.average(n_vectors, axis=0)
 		assert_allclose( average, np.zeros(d), rtol=0, atol=0.01 )
 

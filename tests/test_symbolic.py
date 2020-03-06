@@ -24,7 +24,7 @@ class TestCollectArguments(unittest.TestCase):
 		self.assertTrue(has_function(expression,f))
 		self.assertEqual(
 				replace_function(expression,f,g),
-				3**g(42) + 23 - g(43,44) + g(45+a)*sin( g(g(46,47,48)+17) - g(4) + sin(g(42)) )
+				3**g(42) + 23 - g(43,44) + g(45+a)*sin( g(g(46,47,48)+17) - g(4) ) + sin(g(42))
 			)
 	
 	def test_function_within_function(self):
