@@ -267,7 +267,7 @@ class jitcxde(CheckEnvironment):
 		if not omp:
 			omp = ( [], [] )
 		elif omp is True:
-			omp = ( ["-fopenmp"], ["-lomp"] )
+			omp = ( ["-fopenmp"], ["-lgomp","-fopenmp"] )
 		
 		def determine_compile_args(is_msvc):
 			if extra_compile_args is None:
@@ -290,7 +290,9 @@ class jitcxde(CheckEnvironment):
 		class build_ext_with_compiler_detection(build_ext):
 			def build_extensions(self):
 				is_msvc = self.compiler.compiler_type=="msvc"
-				
+				if not is_msvc:
+					# Circumventing https://github.com/pypa/setuptools/issues/1442
+					self.compiler.linker_so[0] = self.compiler.linker_exe[0]
 				for extension in self.extensions:
 					extension.extra_link_args = determine_link_args(is_msvc)
 					extension.extra_compile_args = determine_compile_args(is_msvc)
