@@ -267,7 +267,7 @@ class jitcxde(CheckEnvironment):
 		if not omp:
 			omp = ( [], [] )
 		elif omp is True:
-			omp = ( ["-fopenmp"], ["-lgomp","-fopenmp"] )
+			omp = ( ["-fopenmp"], ["-fopenmp"] )
 		
 		def determine_compile_args(is_msvc):
 			if extra_compile_args is None:
