@@ -261,6 +261,10 @@ Common Mistakes and Questions
 	* Did you use SymEngine symbols and functions instead of SymPy ones?
 	* Consider using Clang as a compiler.
 
+*	There is a remote chance that you see get a `ValueError`: “assignment destination is read-only” when working with arrays returned from JiTC*DE.
+	This is because the respective array directly accesses JiTC*DE’s internal state for efficiency and if you could write to this, bizarre errors would ensue.
+	If you want to modify such an array, you must make a copy of it first.
+
 .. _JiTCODE: https://github.com/neurophysik/jitcode
 
 .. _JiTCDDE: https://github.com/neurophysik/jitcdde
