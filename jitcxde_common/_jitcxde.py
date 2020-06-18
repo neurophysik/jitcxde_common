@@ -55,8 +55,9 @@ class jitcxde(CheckEnvironment):
 		self.verbose = verbose
 		self._modulename = "jitced"
 		self.n = n
-		
-		if module_location is not None:
+
+		self.from_file = module_location is not None
+		if self.from_file:
 			self.jitced = module_from_path(module_location)
 			self.compile_attempt = True
 		else:
@@ -140,10 +141,11 @@ class jitcxde(CheckEnvironment):
 	
 	@checker
 	def _check_dimension_match(self):
-		self._check_assert(
-			self.n==sum(1 for _ in self.f_sym()),
-			"Length of f and n do not match.",
-		)
+		if not self.from_file:
+			self._check_assert(
+				self.n==sum(1 for _ in self.f_sym()),
+				"Length of f and n do not match.",
+			)
 	
 	def _tmpfile(self,filename=None):
 		"""
