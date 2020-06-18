@@ -42,12 +42,12 @@ class jitcxde_tester(jitcxde):
 	
 	def __init__(self,f_sym=(),n=None,module_location=None,chunk_size=100,omp=False):
 		jitcxde.__init__(self,n,False,module_location)
-		f_sym_wc = self._handle_input(f_sym)
+		self.f_sym = self._handle_input(f_sym)
 		set_dy = symengine.Function("set_dy")
 		self.omp = omp
 		
 		self.render_and_write_code(
-			(set_dy(i,entry) for i,entry in enumerate(f_sym_wc())),
+			(set_dy(i,entry) for i,entry in enumerate(self.f_sym())),
 			name = "f",
 			chunk_size = chunk_size,
 			arguments = [
@@ -184,6 +184,12 @@ class test_errors(unittest.TestCase):
 	def test_set(self):
 		with self.assertRaises(ValueError):
 			jitcxde_tester(set(f))
+	
+	def test_too_generator_length_mismatch(self):
+		for mismatch in [-1,1]:
+			X = jitcxde_tester(f_generator,n=len(f)+mismatch)
+			with self.assertRaises(ValueError):
+				X.check()
 
 if __name__ == "__main__":
 	unittest.main(buffer=True)

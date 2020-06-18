@@ -16,7 +16,7 @@ import numpy
 from jinja2 import Environment, FileSystemLoader
 from symengine import sympify
 
-from jitcxde_common.check import CheckEnvironment
+from jitcxde_common.check import CheckEnvironment, checker
 from jitcxde_common.modules import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
 from jitcxde_common.strings import count_up
 from jitcxde_common.code import write_in_chunks, codelines
@@ -44,11 +44,6 @@ MSVC_COMPILE_ARGS = [
 
 #: A list with the default linker arguments for the Microsoft compiler.
 MSVC_LINK_ARGS = [ "/ignore:4197" ]
-
-# Decorator for checks
-def checker(function):
-	function._is_checker = True
-	return function
 
 class jitcxde(CheckEnvironment):
 	"""
@@ -142,6 +137,13 @@ class jitcxde(CheckEnvironment):
 					yield sympify(entry)
 		
 		return new_f_sym
+	
+	@checker
+	def _check_dimension_match(self):
+		self._check_assert(
+			self.n==sum(1 for _ in self.f_sym()),
+			"Length of f and n do not match.",
+		)
 	
 	def _tmpfile(self,filename=None):
 		"""
