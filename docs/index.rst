@@ -14,7 +14,7 @@ Unix (Linux, MacOS, …)
 *	Usually, you will already have a C compiler installed and need not worry about this step.
 	Otherwise, it should be easy to install GCC or Clang through your package manager.
 	Note that for using Clang, it may be necessary to change the `CC` flag (see below).
-	Finally note that getting OpenMP support (see below) for Clang on MacOS `seems to be a hassle <https://stackoverflow.com/q/43555410/2127008>`_.
+	Finally note that getting OpenMP support (see below) for Clang on MacOS `seems to be a hassle <https://github.com/neurophysik/jitcode/issues/19>`_.
 
 *	Python should be installed by default as well.
 
