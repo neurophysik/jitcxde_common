@@ -9,7 +9,7 @@ class GroupHandler(object):
 		flattened_groups = [i for group in groups for i in group]
 		self.n = max(flattened_groups)+1
 		assert all(0<=i<self.n for i in flattened_groups), "Group elements out of range."
-		assert set(flattened_groups)==set(range(self.n)), "Groups do not cover all indices."
+		assert set(flattened_groups)==set(range(self.n)), "Groups do not cover all indices. If you do not want a dynamical variable to be part of a synchronisation group, add it to a group of its own."
 		assert len(flattened_groups)==self.n, "Groups overlap."
 		
 		self.groups = [sorted(group) for group in groups]
