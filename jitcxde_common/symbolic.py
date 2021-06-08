@@ -88,7 +88,7 @@ def conditional(observable,threshold,value_if,value_else,width=None):
 		.. code-block:: Python
 		
 			def conditional(observable,threshold,value_if,value_else):
-				if observable>threshold:
+				if observable<threshold:
 					return value_if
 				else:
 					return value_else
