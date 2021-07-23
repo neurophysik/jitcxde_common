@@ -255,8 +255,16 @@ Common Mistakes and Questions
 
 *	If you get unexpected or cryptic errors, please run the respective class’s `check` function and also check that all input has the right format and functions have the right signature.
 
+*	If your integration produces implausible results or raises `UnsuccessfulIntegration`, please check that your integration parameters (error tolerances, etc.) and sampling step make sense for your problem. The default settings of JiTC*DE (like that of most integration modules) work best when:
+	
+	* All dynamical variables have the same order of magnitude, which in turn is close to 1.
+	* The order of magnitude of the smallest time scale of the dynamics is 1.
+	* The sampling step is a one to three orders of magnitude smaller than the smallest time scale of the dynamics.
+
 *	If JiTC*DE’s code generation and compilation is too slow or bursts your memory, check:
 	
+	* Everything in the previous point.
+	* Is your sampling step reasonably large, i.e., somewhat smaller than the smallest time scale of your dynamical system?
 	* Did you deactivate simplifications and common-subexpression eliminations?
 	* Did you use a generator?
 	* Did you use chunking?
