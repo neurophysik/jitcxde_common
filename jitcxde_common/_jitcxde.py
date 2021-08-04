@@ -321,7 +321,7 @@ class jitcxde(CheckEnvironment):
 		Parameters
 		----------
 		destination : string specifying a path
-			If this specifies only a directory (don’t forget the trailing `/` or similar), the module will be saved to that directory. If empty (default), the module will be saved to the current working directory. Otherwise, the functions will be (re)compiled to match that filename. A file ending will be appended if needed.
+			If this specifies only a directory (don’t forget the trailing `/` or similar), the module will be saved to that directory. If empty (default), the module will be saved to the current working directory. Otherwise, the functions will be (re)compiled to match that filename (which will ignore the accomplishments and settings of any previous call of `compile_C`). A file ending will be appended if needed.
 		overwrite : boolean
 			Whether to overwrite the specified target if it already exists.
 		
