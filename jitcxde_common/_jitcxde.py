@@ -11,6 +11,7 @@ from sys import modules
 from warnings import warn
 from traceback import format_exc
 from pickle import PickleError
+import atexit
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
@@ -153,6 +154,7 @@ class jitcxde(CheckEnvironment):
 		"""
 		if self._tmpdir is None:
 			self._tmpdir = mkdtemp()
+			atexit.register(self.__del__)
 		
 		if filename is None:
 			return self._tmpdir
@@ -359,10 +361,14 @@ class jitcxde(CheckEnvironment):
 		return destination
 	
 	def __del__(self):
-		try:
-			shutil.rmtree(self._tmpdir)
-		except (OSError, AttributeError, TypeError):
-			pass
+		atexit.unregister(self.__del__)
+		if self._tmpdir is not None:
+			try:
+				shutil.rmtree(self._tmpdir)
+			except (OSError, AttributeError, TypeError) as error:
+				warn(f"Could not delete temporary directory because of the following error:\n{error}")
+			finally:
+				self._tmpdir = None
 	
 	def __getstate__(self):
 		raise PickleError("There is no pickling support for JiTC*DE objects and there likely never will be. Take a look at save_compiled instead.")
