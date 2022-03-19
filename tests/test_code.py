@@ -4,7 +4,7 @@
 import os
 import platform
 import shutil
-from tempfile import mkdtemp
+from tempfile import TemporaryDirectory
 import unittest
 import pickle
 
@@ -74,14 +74,14 @@ def get_unique_name():
 
 class basic_test(unittest.TestCase):
 	def tmpfile(self, filename):
-		return os.path.join(self.directory, filename)
+		return os.path.join(self.directory.name, filename)
 	
 	@classmethod
 	def setUpClass(self):
 		self.argdict = {"f_sym": f}
 	
 	def setUp(self):
-		self.directory = mkdtemp()
+		self.directory = TemporaryDirectory(prefix="jitcxde_test")
 		self.tester = jitcxde_tester(**self.argdict)
 	
 	def test_default(self):
@@ -121,7 +121,11 @@ class basic_test(unittest.TestCase):
 		
 		if platform.system() != "Windows":
 			# Windows blocks loaded module files from removal.
-			shutil.rmtree(self.directory)
+			self.directory.cleanup()
+		
+		tmpdir = self.tester._tmpfile()
+		self.tester.__del__()
+		assert not os.path.isdir(tmpdir)
 
 class basic_test_with_chunking(basic_test):
 	@classmethod
