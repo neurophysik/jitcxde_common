@@ -7,6 +7,7 @@ import shutil
 from tempfile import TemporaryDirectory
 import unittest
 import pickle
+import gc
 
 import symengine
 import numpy
@@ -124,7 +125,8 @@ class basic_test(unittest.TestCase):
 			self.directory.cleanup()
 		
 		tmpdir = self.tester._tmpfile()
-		self.tester.__del__()
+		del self.tester
+		gc.collect()
 		assert not os.path.isdir(tmpdir)
 
 class basic_test_with_chunking(basic_test):
