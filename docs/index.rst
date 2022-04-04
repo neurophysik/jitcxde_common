@@ -67,7 +67,7 @@ Here is a summary of commands for Ubuntu (that should be easily adaptable to mos
 
 .. code-block:: bash
 
-	sudo apt install cmake cython git libgmp-dev python3-jinja2 python3-numpy python3-scipy python3-setuptools
+	sudo apt install cmake cython3 libgmp-dev git libgmp-dev python3-jinja2 python3-numpy python3-scipy python3-setuptools
 	
 	git clone https://github.com/symengine/symengine
 	cd symengine
@@ -76,11 +76,11 @@ Here is a summary of commands for Ubuntu (that should be easily adaptable to mos
 	sudo make install
 	
 	pip3 install \
-		git+git://github.com/symengine/symengine.py \
-		git+git://github.com/neurophysik/jitcxde_common \
-		git+git://github.com/neurophysik/jitcode \
-		git+git://github.com/neurophysik/jitcdde \
-		git+git://github.com/neurophysik/jitcsde \
+		git+https://github.com/symengine/symengine.py \
+		git+https://github.com/neurophysik/jitcxde_common \
+		git+https://github.com/neurophysik/jitcode \
+		git+https://github.com/neurophysik/jitcdde \
+		git+https://github.com/neurophysik/jitcsde \
 		--no-dependencies --user
 
 Testing the Installation
