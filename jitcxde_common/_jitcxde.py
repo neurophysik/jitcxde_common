@@ -359,7 +359,7 @@ class jitcxde(CheckEnvironment):
 		return destination
 	
 	def __del__(self):
-		if self._tmpdir is not None:
+		if hasattr(self,"_tmpdir") and self._tmpdir is not None:
 			try:
 				self._tmpdir.cleanup()
 			except (OSError, AttributeError, TypeError, PermissionError) as error:
