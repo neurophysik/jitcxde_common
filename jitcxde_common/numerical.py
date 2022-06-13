@@ -21,6 +21,17 @@ def orthonormalise(vectors):
 	
 	return np.array(norms)
 
+def orthonormalise_qr(vectors):
+	"""
+	Return orthonormalised vectors (using `numpy.linalg.qr`) and return their norms after orthogonalisation (but before normalisation).
+	"""
+	A = np.asarray(vectors).T
+	vectors,R = np.linalg.qr(A)
+	signs = np.sign(R.diagonal())
+	vectors *= signs
+	norms = R.diagonal()*signs
+	return vectors.T,norms
+
 def rel_dist(x,y):
 	x = np.asarray(x)
 	y = np.asarray(y)
