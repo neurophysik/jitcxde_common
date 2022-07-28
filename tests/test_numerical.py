@@ -63,6 +63,17 @@ class OrthonormaliseQRTest(OrthonormaliseTest):
 	def method(self,vectors):
 		return orthonormalise_qr(vectors)
 
+class OrthonormaliseCompare(unittest.TestCase):
+	def test_random_vectors(self):
+		for _ in range(100):
+			dims = sorted(np.random.randint(1,10,2))
+			vectors = np.random.random(np.prod(dims))
+			vectors_gs = [ vectors[i*dims[1]:(i+1)*dims[1]].copy() for i in range(dims[0]) ]
+			vectors_qr,norms_qr = orthonormalise_qr(vectors.reshape(dims).copy())
+			norms_gs = orthonormalise(vectors_gs)
+			assert_allclose(vectors_gs,vectors_qr)
+			assert_allclose(norms_gs,norms_qr)
+
 class RelDistTest(unittest.TestCase):
 	def test_reldist_1(self):
 		assert_allclose( rel_dist(1,3), 1.0 )
