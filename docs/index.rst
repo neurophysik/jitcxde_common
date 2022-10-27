@@ -59,7 +59,7 @@ Usually you do not need to do this, but it may be the only way if prepackaged Sy
 	
 	.. code-block:: bash
 	
-		pip3 install git+git://github.com/neurophysik/jitcode
+		pip3 install git+https://github.com/neurophysik/jitcode
 	
 	Replace `jitcode` with `jitcxde_common`, `jitcdde`, or `jitcsde` accordingly.
 
