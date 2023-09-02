@@ -1,2 +1,3 @@
 numpydoc
 setuptools_scm
+jitcxde_common
