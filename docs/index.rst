@@ -67,7 +67,7 @@ Here is a summary of commands for Ubuntu (that should be easily adaptable to mos
 
 .. code-block:: bash
 
-	sudo apt install cmake cython3 libgmp-dev git libgmp-dev python3-jinja2 python3-numpy python3-scipy python3-setuptools
+	sudo apt install cmake cython3 libgmp-dev git python3-jinja2 python3-numpy python3-scipy python3-setuptools
 	
 	git clone https://github.com/symengine/symengine
 	cd symengine
