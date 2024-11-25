@@ -31,6 +31,13 @@ dependencies = [
     "symengine>=0.3.1.dev0",
 ]
 
+[project.optional-dependencies]
+test = [
+    # NOTE: required for expr.simplify (symengine calls sympy for that)
+    # https://github.com/symengine/symengine.py/issues/405
+    "sympy"
+]
+
 [project.urls]
 Documentation = "https://jitcde-common.readthedocs.io"
 Homepage = "https://github.com/neurophysik/jitcxde_common"
