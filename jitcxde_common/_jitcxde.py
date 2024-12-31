@@ -11,6 +11,7 @@ from sys import modules
 from warnings import warn
 from traceback import format_exc
 from pickle import PickleError
+import platform
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
@@ -152,7 +153,10 @@ class jitcxde(CheckEnvironment):
 			returns the path to a file in the tempory directory associated to this instance or the directory itself (if `filename` is None). Creates the directory if necessary.
 		"""
 		if self._tmpdir is None:
-			self._tmpdir = TemporaryDirectory(prefix="jitcxde_")
+			self._tmpdir = TemporaryDirectory(
+					prefix="jitcxde_",
+					ignore_cleanup_errors = (platform.system() == "Windows"),
+				)
 		
 		if filename is None:
 			return self._tmpdir.name
@@ -362,8 +366,9 @@ class jitcxde(CheckEnvironment):
 		if hasattr(self,"_tmpdir") and self._tmpdir is not None:
 			try:
 				self._tmpdir.cleanup()
+				raise PermissionError
 			except (OSError, AttributeError, TypeError, PermissionError) as error:
-				warn(f"Could not delete temporary directory because of the following error:\n{error}")
+				warn(f"Could not delete temporary directory {self._tmpdir.name} because of the following error:\n{error}")
 			finally:
 				self._tmpdir = None
 	
