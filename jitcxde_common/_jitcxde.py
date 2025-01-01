@@ -366,7 +366,6 @@ class jitcxde(CheckEnvironment):
 		if hasattr(self,"_tmpdir") and self._tmpdir is not None:
 			try:
 				self._tmpdir.cleanup()
-				raise PermissionError
 			except (OSError, AttributeError, TypeError, PermissionError) as error:
 				warn(f"Could not delete temporary directory {self._tmpdir.name} because of the following error:\n{error}")
 			finally:
