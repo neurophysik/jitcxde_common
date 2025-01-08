@@ -312,7 +312,7 @@ class jitcxde(CheckEnvironment):
 				ext_modules = [extension],
 				script_args = script_args,
 				verbose = verbose,
-				cmdclass = {'build_ext':build_ext_with_compiler_detection}
+				cmdclass = {"build_ext":build_ext_with_compiler_detection}
 			)
 		
 		self.jitced = find_and_load_module(self._modulename,self._tmpfile())
@@ -356,7 +356,7 @@ class jitcxde(CheckEnvironment):
 			raise RuntimeError("Compilation failed. Cannot save module file.")
 		
 		if path.isfile(destination) and not overwrite:
-			raise OSError("Target File already exists and \"overwrite\" is set to False")
+			raise OSError('Target File already exists and "overwrite" is set to False')
 		else:
 			shutil.copy(sourcefile, destination)
 		
