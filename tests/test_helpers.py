@@ -29,7 +29,7 @@ class FilterTest(unittest.TestCase):
 		assert chain==filter_helpers(chain,{p})
 	
 	def test_spurious(self):
-		chain_with_spurious = chain+[[u,v]]
+		chain_with_spurious = [*chain,[u,v]]
 		assert chain==filter_helpers(chain_with_spurious,{p})
 
 class CopyTest(unittest.TestCase):

@@ -43,7 +43,7 @@ class CheckEnvironment:
 		
 		# execute all methods decorated with checker:
 		visited = set()
-		for cls in [self.__class__] + self.__class__.mro():
+		for cls in [self.__class__, *self.__class__.mro()]:
 			for name,member in cls.__dict__.items():
 				if name not in visited and isinstance(member,checker):
 					member(self)

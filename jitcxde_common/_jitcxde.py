@@ -247,9 +247,9 @@ class jitcxde(CheckEnvironment):
 		try:
 			self.compile_C()
 		except Exception:
-			warn(format_exc())
+			warn(format_exc(), stacklevel=3)
 			line = "\n"+60*"="+"\n"
-			warn(line + "READ ME FIRST" + line + "Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call generate_lambdas to explicitly do this and bypass the compile attempt and error messages. Otherwise, you want to take care of fixing the above errors." + 2*line)  # noqa: E501
+			warn(f"{line}READ ME FIRST{line}Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call generate_lambdas to explicitly do this and bypass the compile attempt and error messages. Otherwise, you want to take care of fixing the above errors.{2*line}", stacklevel=3)
 		else:
 			if reset:
 				self.reset_integrator()
@@ -335,7 +335,7 @@ class jitcxde(CheckEnvironment):
 		-------
 		filename : string
 			The destination that was actually used.
-		"""  # noqa: E501
+		"""
 		
 		folder, filename = path.split(destination)
 		
@@ -369,7 +369,7 @@ class jitcxde(CheckEnvironment):
 			try:
 				self._tmpdir.cleanup()
 			except (OSError, AttributeError, TypeError, PermissionError) as error:
-				warn(f"Could not delete temporary directory {self._tmpdir.name} because of the following error:\n{error}")
+				warn(f"Could not delete temporary directory {self._tmpdir.name} because of the following error:\n{error}", stacklevel=2)
 			finally:
 				self._tmpdir = None
 	

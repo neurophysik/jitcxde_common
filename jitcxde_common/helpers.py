@@ -61,5 +61,5 @@ def find_dependent_helpers(helpers,dependency):
 	return dependent_helpers
 
 def copy_helpers(helpers):
-	return [helper for helper in helpers]
+	return list(helpers)
 
