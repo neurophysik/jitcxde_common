@@ -113,7 +113,8 @@ class basic_test(unittest.TestCase):
 		self.tester = jitcxde_tester(module_location=self.tmpfile(filename))
 	
 	def tearDown(self):
-		arg = numpy.random.uniform(-2,2,5)
+		rng = numpy.random.default_rng()
+		arg = rng.uniform(-2,2,5)
 		numpy.testing.assert_allclose(
 				self.tester.jitced.f(arg),
 				f_control(arg)
