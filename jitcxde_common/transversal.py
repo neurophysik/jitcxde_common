@@ -90,7 +90,7 @@ class GroupHandler:
 			# Uppercase numbers are indices of the respective submatrix, lowercase numbers are indices of the full matrix
 			
 			N = symengine.Integer(len(group))
-			for I,i in enumerate(group):
+			for I,i in enumerate(group):  # noqa: E741
 				for J in range(1,I+1):
 					j = group[J]
 					result[i] +=   -J/N *vector[j]

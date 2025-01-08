@@ -178,7 +178,7 @@ class test_errors(unittest.TestCase):
 			with self.assertRaises(ValueError):
 				tester._check_dynvar_dict(faulty_dict,"",i)
 	
-	def test_dict_spurious_equation(self):
+	def test_dict_tester_spurious_equation(self):
 		tester = jitcxde_tester(f)
 		x = symengine.Symbol("x")
 		faulty_dict = { y(0):1, y(1):1, x:1 }

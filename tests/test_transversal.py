@@ -55,7 +55,7 @@ class TestOrdered(unittest.TestCase):
 		
 		transformed = []
 		for entry in self.G.iterate(range(self.n)):
-			if type(entry)==int:
+			if type(entry) is int:
 				transformed.append( sum(y_v[i] for i in self.groups[entry]) )
 			else:
 				transformed.append( y_v[entry[0]] - y_v[entry[1]] )

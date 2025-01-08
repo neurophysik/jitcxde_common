@@ -2,7 +2,7 @@
 
 import platform
 import shutil
-from inspect import isfunction, isgeneratorfunction, stack
+from inspect import isgeneratorfunction, stack
 from os import path
 from pickle import PickleError
 from sys import modules
@@ -125,8 +125,10 @@ class jitcxde(CheckEnvironment):
 		if n is not None and length != n:
 			raise ValueError("len(f_sym) and n do not match.")
 		
-		if n_basic: self.n_basic = length
-		else:       self.n       = length
+		if n_basic:
+			self.n_basic = length
+		else:
+			self.n = length
 		
 		if isinstance(f_sym,dict):
 			new_f_sym = self._generator_func_from_dynvar_dict(f_sym,"f_sym",length)
@@ -247,7 +249,7 @@ class jitcxde(CheckEnvironment):
 		except Exception:
 			warn(format_exc())
 			line = "\n"+60*"="+"\n"
-			warn(line + "READ ME FIRST" + line + "Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call generate_lambdas to explicitly do this and bypass the compile attempt and error messages. Otherwise, you want to take care of fixing the above errors." + 2*line)
+			warn(line + "READ ME FIRST" + line + "Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call generate_lambdas to explicitly do this and bypass the compile attempt and error messages. Otherwise, you want to take care of fixing the above errors." + 2*line)  # noqa: E501
 		else:
 			if reset:
 				self.reset_integrator()
@@ -333,7 +335,7 @@ class jitcxde(CheckEnvironment):
 		-------
 		filename : string
 			The destination that was actually used.
-		"""
+		"""  # noqa: E501
 		
 		folder, filename = path.split(destination)
 		
