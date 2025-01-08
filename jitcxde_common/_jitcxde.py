@@ -1,26 +1,27 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from tempfile import TemporaryDirectory
-from os import path
-from inspect import stack, isgeneratorfunction, isfunction
-from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext
-import shutil
-from sys import modules
-from warnings import warn
-from traceback import format_exc
-from pickle import PickleError
 import platform
+import shutil
+from inspect import isfunction, isgeneratorfunction, stack
+from os import path
+from pickle import PickleError
+from sys import modules
+from tempfile import TemporaryDirectory
+from traceback import format_exc
+from warnings import warn
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
+from setuptools import Extension, setup
+from setuptools.command.build_ext import build_ext
 from symengine import sympify
 
 from jitcxde_common.check import CheckEnvironment, checker
-from jitcxde_common.modules import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
+from jitcxde_common.code import codelines, write_in_chunks
+from jitcxde_common.modules import add_suffix, find_and_load_module, get_module_path, module_from_path, modulename_from_path
 from jitcxde_common.strings import count_up
-from jitcxde_common.code import write_in_chunks, codelines
+
 
 #: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymEngine uses the `pow` function for small integer powers (cf. `SymPy Issue 8997`_).
 DEFAULT_COMPILE_ARGS = [

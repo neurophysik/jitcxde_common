@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from jitcxde_common.helpers import sort_helpers, filter_helpers, copy_helpers, find_dependent_helpers
 import unittest
-from symengine import symbols, sin, cos, Integer
 from itertools import permutations
+
+from symengine import Integer, cos, sin, symbols
+
+from jitcxde_common.helpers import copy_helpers, filter_helpers, find_dependent_helpers, sort_helpers
+
 
 p,q,r,s,u,v = symbols("p q r s u v")
 

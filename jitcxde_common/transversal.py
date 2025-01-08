@@ -1,5 +1,6 @@
 import symengine
 
+
 class GroupHandler(object):
 	"""
 	Class to handle groups of synchronised variables for transversal Lyapunov exponents. Main indices are those that represent the normal dynamics, tangent indices are those that belong to tangent vectors. See the accompanying paper for the mathematical background.

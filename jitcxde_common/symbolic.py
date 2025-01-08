@@ -1,5 +1,6 @@
-from symengine.lib.symengine_wrapper import FunctionSymbol
 from symengine import sympify, tanh
+from symengine.lib.symengine_wrapper import FunctionSymbol
+
 
 def is_call(expression,function):
 	"""

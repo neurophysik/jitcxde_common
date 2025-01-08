@@ -1,6 +1,9 @@
 import unittest
+
 import symengine
+
 from jitcxde_common.transversal import GroupHandler
+
 
 class TestOrdered(unittest.TestCase):
 	@classmethod

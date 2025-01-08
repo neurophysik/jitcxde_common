@@ -1,18 +1,19 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import gc
 import os
+import pickle
 import platform
 import shutil
-from tempfile import TemporaryDirectory
 import unittest
-import pickle
-import gc
+from tempfile import TemporaryDirectory
 
-import symengine
 import numpy
+import symengine
 
 from jitcxde_common import jitcxde
+
 
 y = symengine.Function("y")
 f = [

@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def random_direction(n):
 	"""
 	returns an n-dimensional vector with random direction and length n

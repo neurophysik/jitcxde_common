@@ -5,6 +5,7 @@
 
 from functools import update_wrapper
 
+
 # This class exist just to mark functions
 class checker(object):
 	def __init__(self,function):

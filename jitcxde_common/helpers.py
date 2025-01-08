@@ -1,5 +1,6 @@
 from symengine import sympify
 
+
 def depends_on_any(helper, other_helpers):
 	for other_helper in other_helpers:
 		if helper[1].has(other_helper[0]):

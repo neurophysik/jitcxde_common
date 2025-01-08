@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import unittest
+
 import numpy as np
 from numpy.testing import assert_allclose
-import unittest
-from jitcxde_common.numerical import random_direction, orthonormalise, orthonormalise_qr, rel_dist
+
+from jitcxde_common.numerical import orthonormalise, orthonormalise_qr, random_direction, rel_dist
+
 
 class RandomDirectionTest(unittest.TestCase):
 	def test_random_direction(self):
