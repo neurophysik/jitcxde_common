@@ -82,7 +82,7 @@ class TestErrors(unittest.TestCase):
 		with self.assertRaises(AssertionError):
 			GroupHandler(groups)
 	
-	def test_duplicte_indices(self):
+	def test_duplicate_indices(self):
 		groups = [(0,1),(1,2,3,4)]
 		with self.assertRaises(AssertionError):
 			GroupHandler(groups)

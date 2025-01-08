@@ -67,7 +67,7 @@ class jitcxde(CheckEnvironment):
 		
 		# self.compile_attempt is:
 		#	• None if no compile attempt was made
-		#	• False if a compile attempt was made but not succesful
+		#	• False if a compile attempt was made but not successful
 		#	• True if a successful compile attempt was made
 	
 	def _check_dynvar_dict(self,dictionary,name,length):
@@ -152,7 +152,7 @@ class jitcxde(CheckEnvironment):
 	
 	def _tmpfile(self,filename=None):
 		"""
-			returns the path to a file in the tempory directory associated to this instance or the directory itself (if `filename` is None). Creates the directory if necessary.
+			returns the path to a file in the temporary directory associated to this instance or the directory itself (if `filename` is None). Creates the directory if necessary.
 		"""
 		if self._tmpdir is None:
 			self._tmpdir = TemporaryDirectory(

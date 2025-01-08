@@ -71,16 +71,16 @@ conditional_test_cases = [
 
 class TestConditional(unittest.TestCase):
 	def test_number_input(self):
-		for obs,thr,v_if,v_else,result in conditional_test_cases:
+		for obs,thresh,v_if,v_else,result in conditional_test_cases:
 			self.assertAlmostEqual(
-					float(conditional(obs,thr,v_if,v_else)),
+					float(conditional(obs,thresh,v_if,v_else)),
 					result,
 				)
 	
 	def test_symbolic_threshold(self):
-		for obs,thr,v_if,v_else,result in conditional_test_cases:
+		for obs,thresh,v_if,v_else,result in conditional_test_cases:
 			self.assertAlmostEqual(
-					float(conditional(obs,a,v_if,v_else).subs({a:thr})),
+					float(conditional(obs,a,v_if,v_else).subs({a:thresh})),
 					result,
 				)
 	
