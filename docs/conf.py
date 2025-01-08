@@ -30,8 +30,8 @@ source_suffix = '.rst'
 
 master_doc = 'index'
 
-project = u'JiTC*DE Common'
-copyright = u'2017, Gerrit Ansmann'
+project = 'JiTC*DE Common'
+copyright = '2017, Gerrit Ansmann'
 
 release = version = get_version(root='..', relative_to=__file__)
 

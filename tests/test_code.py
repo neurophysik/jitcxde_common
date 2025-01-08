@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 import gc
 import os
@@ -34,8 +33,7 @@ def f_control(y):
 	]
 
 def f_generator():
-	for entry in f:
-		yield entry
+    yield from f
 
 f_dictionary = { y(i):entry for i,entry in enumerate(f) }
 
