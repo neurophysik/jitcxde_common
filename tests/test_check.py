@@ -1,5 +1,7 @@
 import unittest
+
 from jitcxde_common.check import CheckEnvironment, checker
+
 
 class SomeChecks(CheckEnvironment):
 	def __init__(self,fail=True):

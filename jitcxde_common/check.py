@@ -5,8 +5,9 @@
 
 from functools import update_wrapper
 
+
 # This class exist just to mark functions
-class checker(object):
+class checker:
 	def __init__(self,function):
 		self.function = function
 		update_wrapper(self,function)
@@ -14,7 +15,7 @@ class checker(object):
 	def __call__(self,*args):
 		self.function(*args)
 
-class CheckEnvironment(object):
+class CheckEnvironment:
 	def _check_assert(self,condition,message):
 		if not condition:
 			self.failed_check = True
@@ -42,7 +43,7 @@ class CheckEnvironment(object):
 		
 		# execute all methods decorated with checker:
 		visited = set()
-		for cls in [self.__class__] + self.__class__.mro():
+		for cls in [self.__class__, *self.__class__.mro()]:
 			for name,member in cls.__dict__.items():
 				if name not in visited and isinstance(member,checker):
 					member(self)

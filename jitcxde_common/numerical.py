@@ -1,10 +1,14 @@
 import numpy as np
 
-def random_direction(n):
+
+def random_direction(n, rng=None):
 	"""
 	returns an n-dimensional vector with random direction and length n
 	"""
-	vector = np.random.normal(0,1,n)
+	if rng is None:
+		rng = np.random.default_rng()
+
+	vector = rng.normal(0,1,n)
 	return vector/np.linalg.norm(vector)
 
 def orthonormalise(vectors):

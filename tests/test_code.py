@@ -1,18 +1,18 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
+import gc
 import os
+import pickle
 import platform
 import shutil
-from tempfile import TemporaryDirectory
 import unittest
-import pickle
-import gc
+from tempfile import TemporaryDirectory
 
-import symengine
 import numpy
+import symengine
 
 from jitcxde_common import jitcxde
+
 
 y = symengine.Function("y")
 f = [
@@ -33,8 +33,7 @@ def f_control(y):
 	]
 
 def f_generator():
-	for entry in f:
-		yield entry
+    yield from f
 
 f_dictionary = { y(i):entry for i,entry in enumerate(f) }
 
@@ -114,7 +113,8 @@ class basic_test(unittest.TestCase):
 		self.tester = jitcxde_tester(module_location=self.tmpfile(filename))
 	
 	def tearDown(self):
-		arg = numpy.random.uniform(-2,2,5)
+		rng = numpy.random.default_rng()
+		arg = rng.uniform(-2,2,5)
 		numpy.testing.assert_allclose(
 				self.tester.jitced.f(arg),
 				f_control(arg)
@@ -179,7 +179,7 @@ class test_errors(unittest.TestCase):
 			with self.assertRaises(ValueError):
 				tester._check_dynvar_dict(faulty_dict,"",i)
 	
-	def test_dict_spurious_equation(self):
+	def test_dict_tester_spurious_equation(self):
 		tester = jitcxde_tester(f)
 		x = symengine.Symbol("x")
 		faulty_dict = { y(0):1, y(1):1, x:1 }

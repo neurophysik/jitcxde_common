@@ -1,6 +1,7 @@
 import symengine
 
-class GroupHandler(object):
+
+class GroupHandler:
 	"""
 	Class to handle groups of synchronised variables for transversal Lyapunov exponents. Main indices are those that represent the normal dynamics, tangent indices are those that belong to tangent vectors. See the accompanying paper for the mathematical background.
 	"""
@@ -89,7 +90,7 @@ class GroupHandler(object):
 			# Uppercase numbers are indices of the respective submatrix, lowercase numbers are indices of the full matrix
 			
 			N = symengine.Integer(len(group))
-			for I,i in enumerate(group):
+			for I,i in enumerate(group):  # noqa: E741
 				for J in range(1,I+1):
 					j = group[J]
 					result[i] +=   -J/N *vector[j]

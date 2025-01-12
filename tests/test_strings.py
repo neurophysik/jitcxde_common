@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
+
+import unittest
 
 from jitcxde_common.strings import count_up
-import unittest
+
 
 class StringTest(unittest.TestCase):
 	def test_count_up(self):

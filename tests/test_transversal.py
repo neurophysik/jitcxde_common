@@ -1,6 +1,9 @@
 import unittest
+
 import symengine
+
 from jitcxde_common.transversal import GroupHandler
+
 
 class TestOrdered(unittest.TestCase):
 	@classmethod
@@ -52,7 +55,7 @@ class TestOrdered(unittest.TestCase):
 		
 		transformed = []
 		for entry in self.G.iterate(range(self.n)):
-			if type(entry)==int:
+			if type(entry) is int:
 				transformed.append( sum(y_v[i] for i in self.groups[entry]) )
 			else:
 				transformed.append( y_v[entry[0]] - y_v[entry[1]] )
@@ -79,7 +82,7 @@ class TestErrors(unittest.TestCase):
 		with self.assertRaises(AssertionError):
 			GroupHandler(groups)
 	
-	def test_duplicte_indices(self):
+	def test_duplicate_indices(self):
 		groups = [(0,1),(1,2,3,4)]
 		with self.assertRaises(AssertionError):
 			GroupHandler(groups)

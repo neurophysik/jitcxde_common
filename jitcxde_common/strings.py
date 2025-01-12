@@ -13,5 +13,5 @@ def count_up(name):
 	If `name` ends on a number, increase that number by one. Otherwise append “_1”.
 	"""
 	s, i = rsplit_int(name)
-	return s + ( "%%.%ii" % len(i) % (int(i)+1)  if i else "_1" )
+	return s + ( f"{int(i) + 1:0{len(i)}d}"  if i else "_1" )
 

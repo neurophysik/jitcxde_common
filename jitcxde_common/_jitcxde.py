@@ -1,26 +1,26 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
-from tempfile import TemporaryDirectory
-from os import path
-from inspect import stack, isgeneratorfunction, isfunction
-from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext
-import shutil
-from sys import modules
-from warnings import warn
-from traceback import format_exc
-from pickle import PickleError
 import platform
+import shutil
+from inspect import isgeneratorfunction, stack
+from os import path
+from pickle import PickleError
+from sys import modules
+from tempfile import TemporaryDirectory
+from traceback import format_exc
+from warnings import warn
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
+from setuptools import Extension, setup
+from setuptools.command.build_ext import build_ext
 from symengine import sympify
 
 from jitcxde_common.check import CheckEnvironment, checker
-from jitcxde_common.modules import get_module_path, modulename_from_path, find_and_load_module, module_from_path, add_suffix
+from jitcxde_common.code import codelines, write_in_chunks
+from jitcxde_common.modules import add_suffix, find_and_load_module, get_module_path, module_from_path, modulename_from_path
 from jitcxde_common.strings import count_up
-from jitcxde_common.code import write_in_chunks, codelines
+
 
 #: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymEngine uses the `pow` function for small integer powers (cf. `SymPy Issue 8997`_).
 DEFAULT_COMPILE_ARGS = [
@@ -67,12 +67,12 @@ class jitcxde(CheckEnvironment):
 		
 		# self.compile_attempt is:
 		#	• None if no compile attempt was made
-		#	• False if a compile attempt was made but not succesful
+		#	• False if a compile attempt was made but not successful
 		#	• True if a successful compile attempt was made
 	
 	def _check_dynvar_dict(self,dictionary,name,length):
 		if not set(dictionary.keys()) == {self.dynvar(i) for i in range(length)}:
-			raise ValueError("If %s is a dictionary, its keys must be y(0), y(1), …, y(n) where n is the number of entries." % name)
+			raise ValueError(f"If '{name}' is a dictionary, its keys must be y(0), y(1), …, y(n) where n is the number of entries.")
 	
 	def _generator_func_from_dynvar_dict(self,dictionary,name,length):
 		"""
@@ -125,8 +125,10 @@ class jitcxde(CheckEnvironment):
 		if n is not None and length != n:
 			raise ValueError("len(f_sym) and n do not match.")
 		
-		if n_basic: self.n_basic = length
-		else:       self.n       = length
+		if n_basic:
+			self.n_basic = length
+		else:
+			self.n = length
 		
 		if isinstance(f_sym,dict):
 			new_f_sym = self._generator_func_from_dynvar_dict(f_sym,"f_sym",length)
@@ -150,7 +152,7 @@ class jitcxde(CheckEnvironment):
 	
 	def _tmpfile(self,filename=None):
 		"""
-			returns the path to a file in the tempory directory associated to this instance or the directory itself (if `filename` is None). Creates the directory if necessary.
+			returns the path to a file in the temporary directory associated to this instance or the directory itself (if `filename` is None). Creates the directory if necessary.
 		"""
 		if self._tmpdir is None:
 			self._tmpdir = TemporaryDirectory(
@@ -245,9 +247,9 @@ class jitcxde(CheckEnvironment):
 		try:
 			self.compile_C()
 		except Exception:
-			warn(format_exc())
+			warn(format_exc(), stacklevel=3)
 			line = "\n"+60*"="+"\n"
-			warn(line + "READ ME FIRST" + line + "Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call generate_lambdas to explicitly do this and bypass the compile attempt and error messages. Otherwise, you want to take care of fixing the above errors." + 2*line)
+			warn(f"{line}READ ME FIRST{line}Generating compiled integrator failed; resorting to lambdified functions. If you can live with using the Python backend, you can call generate_lambdas to explicitly do this and bypass the compile attempt and error messages. Otherwise, you want to take care of fixing the above errors.{2*line}", stacklevel=3)
 		else:
 			if reset:
 				self.reset_integrator()
@@ -312,7 +314,7 @@ class jitcxde(CheckEnvironment):
 				ext_modules = [extension],
 				script_args = script_args,
 				verbose = verbose,
-				cmdclass = {'build_ext':build_ext_with_compiler_detection}
+				cmdclass = {"build_ext":build_ext_with_compiler_detection}
 			)
 		
 		self.jitced = find_and_load_module(self._modulename,self._tmpfile())
@@ -356,7 +358,7 @@ class jitcxde(CheckEnvironment):
 			raise RuntimeError("Compilation failed. Cannot save module file.")
 		
 		if path.isfile(destination) and not overwrite:
-			raise OSError("Target File already exists and \"overwrite\" is set to False")
+			raise OSError('Target File already exists and "overwrite" is set to False')
 		else:
 			shutil.copy(sourcefile, destination)
 		
@@ -367,7 +369,7 @@ class jitcxde(CheckEnvironment):
 			try:
 				self._tmpdir.cleanup()
 			except (OSError, AttributeError, TypeError, PermissionError) as error:
-				warn(f"Could not delete temporary directory {self._tmpdir.name} because of the following error:\n{error}")
+				warn(f"Could not delete temporary directory {self._tmpdir.name} because of the following error:\n{error}", stacklevel=2)
 			finally:
 				self._tmpdir = None
 	

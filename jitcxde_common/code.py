@@ -1,6 +1,9 @@
 from itertools import chain
+
 from symengine.printing import ccode
+
 from jitcxde_common.strings import count_up
+
 
 def codelines(expressions):
 	"""
@@ -14,13 +17,12 @@ def codelines(expressions):
 				raise
 			else:
 				raise NotImplementedError(
-						"Cannot convert the following expression to C Code:\n"
-						+ str(expression)
-					)
+						f"Cannot convert the following expression to C Code:\n{expression}"
+					) from error
 		yield codeline + ";\n"
 
 def render_declarator(name, _type, size=0):
-	return _type + " " + name + ("[%i]"%size if size else "")
+	return _type + " " + name + (f"[{size}]" if size else "")
 
 def write_in_chunks(lines,mainfile,deffile,name,chunk_size,arguments,omp=True):
 	"""

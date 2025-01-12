@@ -1,10 +1,12 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
+
+import unittest
 
 import numpy as np
 from numpy.testing import assert_allclose
-import unittest
-from jitcxde_common.numerical import random_direction, orthonormalise, orthonormalise_qr, rel_dist
+
+from jitcxde_common.numerical import orthonormalise, orthonormalise_qr, random_direction, rel_dist
+
 
 class RandomDirectionTest(unittest.TestCase):
 	def test_random_direction(self):
@@ -65,9 +67,10 @@ class OrthonormaliseQRTest(OrthonormaliseTest):
 
 class OrthonormaliseCompare(unittest.TestCase):
 	def test_random_vectors(self):
+		rng = np.random.default_rng()
 		for _ in range(100):
-			dims = sorted(np.random.randint(1,10,2))
-			vectors = np.random.random(np.prod(dims))
+			dims = sorted(rng.integers(1,10,2))
+			vectors = rng.random(np.prod(dims))
 			vectors_gs = [ vectors[i*dims[1]:(i+1)*dims[1]].copy() for i in range(dims[0]) ]
 			vectors_qr,norms_qr = orthonormalise_qr(vectors.reshape(dims).copy())
 			norms_gs = orthonormalise(vectors_gs)

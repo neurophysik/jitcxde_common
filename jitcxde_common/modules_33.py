@@ -1,6 +1,7 @@
-from os import path
-from importlib.machinery import ExtensionFileLoader, EXTENSION_SUFFIXES, FileFinder
+from importlib.machinery import EXTENSION_SUFFIXES, ExtensionFileLoader, FileFinder
 from importlib.util import spec_from_file_location
+from os import path
+
 
 loader_details = (ExtensionFileLoader, EXTENSION_SUFFIXES)
 suffices = sorted(EXTENSION_SUFFIXES, key=len)

@@ -1,5 +1,6 @@
 from symengine import sympify
 
+
 def depends_on_any(helper, other_helpers):
 	for other_helper in other_helpers:
 		if helper[1].has(other_helper[0]):
@@ -60,5 +61,5 @@ def find_dependent_helpers(helpers,dependency):
 	return dependent_helpers
 
 def copy_helpers(helpers):
-	return [helper for helper in helpers]
+	return list(helpers)
 

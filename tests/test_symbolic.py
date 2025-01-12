@@ -1,6 +1,9 @@
 import unittest
-from symengine import Function, Symbol, sin, Integer
-from jitcxde_common.symbolic import collect_arguments, count_calls, has_function, replace_function, conditional
+
+from symengine import Function, Integer, Symbol, sin
+
+from jitcxde_common.symbolic import collect_arguments, conditional, count_calls, has_function, replace_function
+
 
 f = Function("f")
 g = Function("g")
@@ -68,16 +71,16 @@ conditional_test_cases = [
 
 class TestConditional(unittest.TestCase):
 	def test_number_input(self):
-		for obs,thr,v_if,v_else,result in conditional_test_cases:
+		for obs,thresh,v_if,v_else,result in conditional_test_cases:
 			self.assertAlmostEqual(
-					float(conditional(obs,thr,v_if,v_else)),
+					float(conditional(obs,thresh,v_if,v_else)),
 					result,
 				)
 	
 	def test_symbolic_threshold(self):
-		for obs,thr,v_if,v_else,result in conditional_test_cases:
+		for obs,thresh,v_if,v_else,result in conditional_test_cases:
 			self.assertAlmostEqual(
-					float(conditional(obs,a,v_if,v_else).subs({a:thr})),
+					float(conditional(obs,a,v_if,v_else).subs({a:thresh})),
 					result,
 				)
 	
