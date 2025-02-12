@@ -67,7 +67,7 @@ class OrthonormaliseQRTest(OrthonormaliseTest):
 
 class OrthonormaliseCompare(unittest.TestCase):
 	def test_random_vectors(self):
-		rng = np.random.default_rng()
+		rng = np.random.default_rng(seed=42)
 		for _ in range(100):
 			dims = sorted(rng.integers(1,10,2))
 			vectors = rng.random(np.prod(dims))
