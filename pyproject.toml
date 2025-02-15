@@ -49,6 +49,7 @@ include = [
 
 [tool.setuptools_scm]
 write_to = "jitcxde_common/version.py"
+local_scheme = "no-local-version"
 
 [tool.ruff]
 target-version = "py310"
