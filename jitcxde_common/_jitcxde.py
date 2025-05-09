@@ -25,7 +25,7 @@ from jitcxde_common.strings import count_up
 #: A list with the default extra compile arguments. Note that without `-Ofast`, `-ffast-math`, or `-funsafe-math-optimizations` (if supported by your compiler), you may experience a considerable speed loss since SymEngine uses the `pow` function for small integer powers (cf. `SymPy Issue 8997`_).
 DEFAULT_COMPILE_ARGS = [
 		"-std=c11",
-		"-Ofast",
+		"-O3", "-ffast-math",
 		"-g0",
 		"-march=native",
 		"-mtune=native",
