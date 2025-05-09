@@ -94,13 +94,13 @@ def conditional(observable,threshold,value_if,value_else,width=None):
 				else:
 					return value_else
 		
-		The import difference is that this is smooth and evaluated at runtime.
+		The important difference are that this is smooth and evaluated at runtime.
 		
-		`width` controls the steepness of the sigmoidal used to implement this. If not specified, this will be guessed – from the threshold if possible.
+		`width` controls the steepness of the sigmoidal used to implement this. If not specified, this will be guessed: If :math:`T` is the threshold, and :math:`T` is a number, the width is :math:`10^{-5} · |T|`, otherwise it’s just :math:`10^{-5}`.
 	"""
 	if width is None:
 		if sympify(threshold).is_number and threshold!=0:
-			width = threshold/100000
+			width = abs(threshold)/100000
 		else:
 			width = 1e-5
 	

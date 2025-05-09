@@ -53,6 +53,8 @@ class TestCollectArguments(unittest.TestCase):
 ε = 1e-2
 conditional_test_cases = [
 		( 41  , 42,  7, 23,  7 ),
+		(-43  ,-42,  7, 23,  7 ),
+		( 41  ,-42,  7, 23, 23 ),
 		( 42-ε, 42,  7, 23,  7 ),
 		( 42  , 42,  7, 23, 15 ),
 		( 42+ε, 42,  7, 23, 23 ),
