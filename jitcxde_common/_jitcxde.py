@@ -5,10 +5,10 @@ import shutil
 from inspect import isgeneratorfunction, stack
 from os import path
 from pickle import PickleError
-from sys import modules
+from sys import flags, modules
 from tempfile import TemporaryDirectory
 from traceback import format_exc
-from warnings import warn
+from warnings import catch_warnings, filterwarnings, warn
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
@@ -309,13 +309,17 @@ class jitcxde(CheckEnvironment):
 				
 				build_ext.build_extensions(self)
 		
-		setup(
-				name = self._modulename,
-				ext_modules = [extension],
-				script_args = script_args,
-				verbose = verbose,
-				cmdclass = {"build_ext":build_ext_with_compiler_detection}
-			)
+		with catch_warnings():
+			if not flags.dev_mode:
+				filterwarnings("ignore", category=DeprecationWarning, module=r"setuptools")
+				filterwarnings("ignore", category=UserWarning, module=r"setuptools")
+			setup(
+					name = self._modulename,
+					ext_modules = [extension],
+					script_args = script_args,
+					verbose = verbose,
+					cmdclass = {"build_ext":build_ext_with_compiler_detection}
+				)
 		
 		self.jitced = find_and_load_module(self._modulename,self._tmpfile())
 		self.compile_attempt = True
