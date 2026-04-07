@@ -12,7 +12,7 @@ from warnings import catch_warnings, filterwarnings, warn
 
 import numpy
 from jinja2 import Environment, FileSystemLoader
-from setuptools import Extension, setup
+from setuptools import Distribution, Extension, setup
 from setuptools.command.build_ext import build_ext
 from symengine import sympify
 
@@ -308,7 +308,17 @@ class jitcxde(CheckEnvironment):
 					extension.extra_compile_args = determine_compile_args(is_msvc)
 				
 				build_ext.build_extensions(self)
-		
+
+		# setuptools_scm looks for a pyproject.toml in the current directory of
+		# the project using jitcxde_common and triggers a warning if the project
+		# doesn't have a `[tool.setuptools-scm]` section. This custom distribution
+		# does not load the setuptools_scm entry point for compiled extensions,
+		# since it is not necessary, and avoid the useless warning.
+		class NoVCSDistribution(Distribution):
+			@staticmethod
+			def _removed(ep):
+				return Distribution._removed(ep) or ep.name == "setuptools_scm"
+
 		with catch_warnings():
 			if not flags.dev_mode:
 				filterwarnings("ignore", category=DeprecationWarning, module=r"setuptools")
@@ -318,7 +328,8 @@ class jitcxde(CheckEnvironment):
 					ext_modules = [extension],
 					script_args = script_args,
 					verbose = verbose,
-					cmdclass = {"build_ext":build_ext_with_compiler_detection}
+					cmdclass = {"build_ext":build_ext_with_compiler_detection},
+					distclass = NoVCSDistribution,
 				)
 		
 		self.jitced = find_and_load_module(self._modulename,self._tmpfile())
