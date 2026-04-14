@@ -10,18 +10,18 @@ name = "jitcxde_common"
 dynamic = ["version"]
 description = "Common code for JiTC*DE"
 readme = "README.rst"
-license = { text = "BSD-3-Clause" }
+license = "BSD-3-Clause"
 authors = [
     { name = "Gerrit Ansmann", email = "gansmann@uni-bonn.de" },
 ]
 requires-python = ">=3.10"
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "License :: OSI Approved :: BSD License",
+    "Development Status :: 5 – Production/Stable",
     "Operating System :: POSIX",
     "Operating System :: MacOS :: MacOS X",
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
+    "Programming Language :: C",
     "Topic :: Scientific/Engineering :: Mathematics",
 ]
 dependencies = [
