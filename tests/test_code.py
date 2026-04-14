@@ -89,7 +89,7 @@ class basic_test(unittest.TestCase):
 	
 	def test_save_and_load(self):
 		destination = self.tester.save_compiled(overwrite=True)
-		folder, filename = os.path.split(destination)
+		_folder, filename = os.path.split(destination)
 		shutil.move(filename,self.tmpfile(filename))
 		self.tester = jitcxde_tester(module_location=self.tmpfile(filename))
 	
